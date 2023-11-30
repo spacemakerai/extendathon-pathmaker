@@ -28,7 +28,7 @@ function InputSlider({
           variant="discrete"
           label={label}
           //@ts-ignore
-          onChange={(e) => onChange(e.detail)}
+          onInput={(e) => onChange(e.detail)}
         ></weave-slider>
         <weave-input
           style={{ width: "40px", marginLeft: "12px" }}
