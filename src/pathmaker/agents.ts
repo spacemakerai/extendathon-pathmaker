@@ -6,7 +6,7 @@ import roadCanvas from "./roadCanvas.ts";
 import buildingCanvas from "./buildingCanvas.ts";
 import { signal } from "@preact/signals";
 
-type Agent = {
+export type Agent = {
   pos: {
     x: number;
     y: number;
@@ -17,6 +17,7 @@ type Agent = {
   };
   targetType: "origin" | "destination";
   targetIndex: number;
+  pheromoneLevel: number;
 };
 
 function random(min: number, max: number) {
@@ -43,6 +44,7 @@ function initializeAgents() {
       ),
       targetType: "destination",
       targetIndex: randomInt(state.pointsOfInterest.value.length),
+      pheromoneLevel: 0,
     };
   });
 }
@@ -99,8 +101,8 @@ function randomInt(max: number) {
 const ANGLE_DIFF = Math.PI / 4;
 
 function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
-  const DISTANCE = 50;
-  const RADIUS = 20;
+  const DISTANCE = 5;
+  const RADIUS = 2;
 
   const frontDir = normalize(velocity);
 
@@ -161,16 +163,17 @@ function getBuildingEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agen
   const leftAngle = angle + ANGLE_DIFF;
   const leftDir = { x: Math.cos(leftAngle), y: Math.sin(leftAngle) };
 
-  const front = buildingCanvas.samplePos(add(pos, multiply(frontDir, DISTANCE)));
   const right = buildingCanvas.samplePos(add(pos, multiply(rightDir, DISTANCE)));
   const left = buildingCanvas.samplePos(add(pos, multiply(leftDir, DISTANCE)));
 
-  if (left > front && left > right) {
+  if (left < 1e-3 && right < 1e-3) {
+    return { x: 0, y: 0 };
+  }
+
+  if (left > right) {
     return normalize(multiply(rightDir, right));
-  } else if (right > left && right > front) {
-    return normalize(multiply(leftDir, left));
   } else {
-    return multiply(normalize(multiply(frontDir, front)), -1);
+    return normalize(multiply(leftDir, left));
   }
 }
 
@@ -211,16 +214,21 @@ function updateVelocity(agent: Agent): Agent["velocity"] {
   return setLength(sum, state.agentWeights.value.agentSpeed);
 }
 
-const REACHED_DESTINATION_THRESHOLD = 10;
+const REACHED_DESTINATION_THRESHOLD = 3;
 
 function updateTarget(agent: Agent) {
   const target = getTargetPosition(agent);
-  if (!target || length(sub(target, agent.pos)) < REACHED_DESTINATION_THRESHOLD) {
+  if (target && length(sub(target, agent.pos)) < REACHED_DESTINATION_THRESHOLD) {
     agent.targetType = agent.targetType === "destination" ? "origin" : "destination";
     agent.targetIndex =
       agent.targetType === "destination"
         ? randomInt(state.pointsOfInterest.value.length)
         : randomInt(state.sourcePoints.value.length);
+
+    agent.pheromoneLevel = 1;
+    // if (agent.targetType === "origin") {
+    //   agent.pheromoneLevel = 1;
+    // }
   }
 }
 
@@ -232,9 +240,10 @@ function step() {
     }
     a.pos = move(a.pos, a.velocity);
     a.velocity = updateVelocity(a);
+    a.pheromoneLevel *= 0.995;
     updateTarget(a);
   }
-  pheromone.update(agents.map((a) => a.pos));
+  pheromone.update(agents);
 }
 
 export function updateAgentCanvas(showAgents: boolean) {

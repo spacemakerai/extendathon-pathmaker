@@ -28,7 +28,7 @@ function InputSlider({
           variant="discrete"
           label={label}
           //@ts-ignore
-          onInput={(e) => onChange(e.detail)}
+          onInput={(e) => onChange(parseFloat(e.detail))}
         ></weave-slider>
         <weave-input
           style={{ maxWidth: "50px", marginLeft: "12px" }}
@@ -37,7 +37,7 @@ function InputSlider({
           label={label}
           step={step}
           //@ts-ignore
-          onChange={(e) => onChange(e.detail)}
+          onChange={(e) => onChange(parseFloat(e.detail))}
         ></weave-input>
       </div>
     </>
@@ -122,10 +122,10 @@ export default function Weights() {
       />
       <InputSlider
         value={pheromoneDecay}
-        max={2}
-        min={0}
+        max={1}
+        min={0.9}
         label={"Pheromone decay"}
-        step={0.1}
+        step={0.01}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, pheromoneDecay: value };
         }}

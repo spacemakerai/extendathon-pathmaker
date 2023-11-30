@@ -26,10 +26,10 @@ const visibleCanvas = signal({ buildings: true, roads: true });
 const agentSettings = signal<AgentSettings>({
   keepSpeed: 1,
   pheromone: 1,
-  point: 0.5,
-  road: 1,
-  pheromoneDecay: 0.9,
-  agentSpeed: 4,
+  point: 0.6,
+  road: 0.1,
+  pheromoneDecay: 0.995,
+  agentSpeed: 2,
   building: 5,
   random: 0.2,
 });

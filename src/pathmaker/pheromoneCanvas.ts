@@ -2,6 +2,7 @@ import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import state, { Point } from "./state.ts";
 import { drawCircle } from "./helpers.ts";
+import { Agent } from "./agents.ts";
 
 let canvas: HTMLCanvasElement | undefined;
 let ctx: CanvasRenderingContext2D | null;
@@ -21,7 +22,7 @@ function initializeCanvas() {
   });
 }
 
-function update(pos: Point[]) {
+function update(agents: Agent[]) {
   if (!ctx || !canvas) return;
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imgData.data;
@@ -36,8 +37,8 @@ function update(pos: Point[]) {
 
   ctx.putImageData(imgData, 0, 0);
 
-  for (let p of pos) {
-    drawCircle(ctx, p, 2, "rgba(0, 255, 0, 100)");
+  for (let a of agents) {
+    drawCircle(ctx, a.pos, 2, `rgba(0, 255, 0, ${a.pheromoneLevel * 100})`);
   }
 
   Forma.terrain.groundTexture.updateTextureData({ name, canvas });
