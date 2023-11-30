@@ -29,9 +29,12 @@ export default function POIButton() {
       >
         Add POIs
       </weave-button>
-      <weave-button variant="flat" onClick={() => (state.pointsOfInterest.value = [])}>
-        Clear
-      </weave-button>
+      {state.pointsOfInterest.value.length > 0 && (
+        <weave-button variant="flat" onClick={() => (state.pointsOfInterest.value = [])}>
+          Clear
+        </weave-button>
+      )}
+
       {state.pointsOfInterest.value.length > 0 ? (
         <p>{state.pointsOfInterest.value.length} POIs added</p>
       ) : null}

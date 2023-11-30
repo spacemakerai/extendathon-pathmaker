@@ -227,6 +227,7 @@ function updateTarget(agent: Agent) {
         : randomInt(state.sourcePoints.value.length);
 
     agent.pheromoneLevel = 1;
+    agent.velocity = { x: 0, y: 0 };
     // if (agent.targetType === "origin") {
     //   agent.pheromoneLevel = 1;
     // }

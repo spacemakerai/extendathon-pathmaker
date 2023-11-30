@@ -38,7 +38,7 @@ function update(agents: Agent[]) {
   ctx.putImageData(imgData, 0, 0);
 
   for (let a of agents) {
-    drawCircle(ctx, a.pos, 3, `rgba(0, 255, 0, ${a.pheromoneLevel * 0.8})`);
+    drawCircle(ctx, a.pos, 1.5, `rgba(0, 255, 0, ${a.pheromoneLevel * 0.8})`);
   }
 
   Forma.terrain.groundTexture.updateTextureData({ name, canvas });
