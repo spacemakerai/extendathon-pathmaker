@@ -2,8 +2,6 @@ import agentCanvas from "./agentCanvas.ts";
 import { DIMENSION } from "./constants.ts";
 import pheromone from "./pheromoneCanvas.ts";
 import { Point } from "./state.ts";
-import buildings from "./buildings.ts";
-import roads from "./roads.ts";
 
 type Agent = {
   pos: {
@@ -94,11 +92,9 @@ function step() {
   pheromone.update(agents.map((a) => a.pos));
 }
 
-const buildingTriangles = await buildings.get();
-const roadLines = await roads.get();
 
 export function updateAgentCanvas(showAgents: boolean) {
-  agentCanvas.draw(showAgents ? agents.map((a) => a.pos) : [], roadLines, buildingTriangles);
+  agentCanvas.draw(showAgents ? agents.map((a) => a.pos) : []);
 }
 
 export function runSimulateAndAnimateLoop() {

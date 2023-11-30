@@ -1,15 +1,13 @@
 import { Point } from "./state.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { DIMENSION } from "./constants.ts";
-import { drawCircle, drawRoad, drawTriangle } from "./commonCanvas.ts";
-import { Building } from "./buildings.ts";
-import { Road } from "./roads.ts";
+import { drawCircle } from "./helpers.ts";
 
 export const name = "pathmaker-id";
 
 let agentCanvas: HTMLCanvasElement | undefined;
 
-export function initializeCanvas() {
+function initializeCanvas() {
   console.log("initialize");
   agentCanvas = document.createElement("canvas", {});
   agentCanvas.height = DIMENSION;
@@ -29,7 +27,7 @@ export function initializeCanvas() {
   });
 }
 
-function draw(points: Point[], roads: Road[], buildings: Building[]) {
+function draw(points: Point[]) {
   if (!agentCanvas) return;
   const ctx = agentCanvas.getContext("2d") as CanvasRenderingContext2D;
   if (!ctx) return;
@@ -38,15 +36,6 @@ function draw(points: Point[], roads: Road[], buildings: Building[]) {
   for (let point of points) {
     drawCircle(ctx, point, 5, "red");
   }
-  for (let building of buildings) {
-    for (let triangle of building.triangles) {
-      drawTriangle(ctx, triangle);
-    }
-  }
-  for (let road of roads) {
-    drawRoad(ctx, road);
-  }
-
   Forma.terrain.groundTexture.updateTextureData({ name, canvas: agentCanvas });
 }
 
@@ -57,4 +46,5 @@ function clear() {
 export default {
   draw,
   clear,
+  initialize: initializeCanvas,
 };

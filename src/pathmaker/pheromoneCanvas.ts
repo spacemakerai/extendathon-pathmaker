@@ -1,7 +1,7 @@
 import { DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Point } from "./state.ts";
-import { drawCircle } from "./commonCanvas.ts";
+import { drawCircle } from "./helpers.ts";
 
 let canvas: HTMLCanvasElement | undefined;
 let ctx: CanvasRenderingContext2D | null;
@@ -64,7 +64,7 @@ function clear() {
 }
 
 export default {
-  initializeCanvas,
+  initialize: initializeCanvas,
   update,
   samplePos,
   clear,

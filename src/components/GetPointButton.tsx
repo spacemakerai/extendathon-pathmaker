@@ -11,9 +11,9 @@ export default function GetPointButton() {
     const pos = await Forma.designTool.getPoint();
     if (pos) {
       state.points.value = [...state.points.value, pos];
-      const buildingTriangles = await buildings.get();
-      const roadLines = await roads.get();
-      agentCanvas.draw(state.points.value, roadLines, buildingTriangles);
+      state.buildings.value = await buildings.get();
+      state.roads.value = await roads.get();
+      agentCanvas.draw(state.points.value);
     }
   }, []);
 
