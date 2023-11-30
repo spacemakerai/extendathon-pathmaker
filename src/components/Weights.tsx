@@ -51,10 +51,20 @@ export default function Weights() {
   return (
     <>
       <InputSlider
+        value={state.numberOfAgents.value}
+        max={10000}
+        min={10}
+        label={"Number of agents"}
+        step={100}
+        onChange={(value) => {
+          state.numberOfAgents.value = value;
+        }}
+      />
+      <InputSlider
         value={point}
         max={1}
         min={0}
-        label={"Point"}
+        label={"Point attraction"}
         step={0.1}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, point: value };
@@ -64,7 +74,7 @@ export default function Weights() {
         value={road}
         max={5}
         min={0}
-        label={"Road"}
+        label={"Road attraction"}
         step={0.1}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, road: value };
@@ -74,7 +84,7 @@ export default function Weights() {
         value={pheromone}
         max={3}
         min={0}
-        label={"Pheromone"}
+        label={"Pheromone attraction"}
         step={0.1}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, pheromone: value };
@@ -84,7 +94,7 @@ export default function Weights() {
         value={keepSpeed}
         max={4}
         min={0}
-        label={"Keep speed"}
+        label={"Keep direction factor"}
         step={0.1}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, keepSpeed: value };
@@ -94,7 +104,7 @@ export default function Weights() {
         value={building}
         max={10}
         min={0}
-        label={"Avoid buildings"}
+        label={"Building avoidance"}
         step={0.1}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, building: value };
@@ -104,20 +114,10 @@ export default function Weights() {
         value={random}
         max={1}
         min={0}
-        label={"Random"}
+        label={"Random turning"}
         step={0.1}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, random: value };
-        }}
-      />
-      <InputSlider
-        value={state.numberOfAgents.value}
-        max={10000}
-        min={10}
-        label={"Number of agents"}
-        step={100}
-        onChange={(value) => {
-          state.numberOfAgents.value = value;
         }}
       />
       <InputSlider
