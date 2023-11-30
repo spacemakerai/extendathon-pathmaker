@@ -2,7 +2,7 @@ import { useCallback } from "preact/compat";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import state from "../pathmaker/state.ts";
 import { coordinateToCanvasSpace } from "../pathmaker/helpers.ts";
-
+import styles from "./style.module.css";
 export default function POIButton() {
   const onClick = useCallback(async () => {
     state.getPointState.value = "poi";
@@ -18,7 +18,7 @@ export default function POIButton() {
   }, []);
 
   return (
-    <div>
+    <div className={styles.Section}>
       <h3>Points of interest</h3>
       <p className="helpText">Stores, bus stops, kindergartens, etc.</p>
       {state.pointsOfInterest.value.length > 0 ? (

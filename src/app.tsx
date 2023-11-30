@@ -10,6 +10,8 @@ import sourcePointsCanvas from "./pathmaker/sourcePointsCanvas.ts";
 import Weights from "./components/Weights.tsx";
 import Layers from "./pathmaker/layers.tsx";
 import costMap from "./pathmaker/costMap.ts";
+import { useState } from "preact/hooks";
+import styles from "./components/style.module.css";
 
 if (import.meta.hot) {
   import.meta.hot.on("vite:afterUpdate", () => {
@@ -25,27 +27,38 @@ pointOfInterestCanvas.initialize();
 sourcePointsCanvas.initialize();
 
 export default function App() {
+  const [showSettings, setShowShowSettings] = useState(false);
   return (
     <>
-      <h1>Pathmaker</h1>
+      <h3>Pathmaker</h3>
       <SourcePointButton />
       <POIButton />
-      <Weights />
-      <button
-        onClick={() => {
-          if (agentsRunning.value) {
-            stopAgents();
-          } else {
-            startAgents();
-          }
-        }}
-      >
-        {agentsRunning.value ? "Stop agent simulation" : "Start agent simulation"}
-      </button>
+      <div className={styles.Section}>
+        <h3>Simulation</h3>
+        <weave-button
+          onClick={() => {
+            if (agentsRunning.value) {
+              stopAgents();
+            } else {
+              startAgents();
+            }
+          }}
+        >
+          {agentsRunning.value ? "Stop agent simulation" : "Start agent simulation"}
+        </weave-button>
+      </div>
+      <weave-button variant="flat" onClick={() => setShowShowSettings((prev) => !prev)}>
+        Show advanced settings
+      </weave-button>
+      {showSettings && (
+        <>
+          <Weights />
 
-      <Terrain />
-      <button onClick={costMap.update}>Update cost map</button>
-      <Layers />
+          <Terrain />
+          <button onClick={costMap.update}>Update cost map</button>
+          <Layers />
+        </>
+      )}
     </>
   );
 }
