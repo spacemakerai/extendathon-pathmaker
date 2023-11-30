@@ -17,6 +17,7 @@ export type AgentSettings = {
   agentSpeed: number;
 };
 
+const getPointState = signal<"poi" | "source" | undefined>(undefined);
 const pointsOfInterest = signal<Point[]>([]);
 const sourcePoints = signal<Point[]>([]);
 const buildingsState = signal<Building[]>([]);
@@ -63,4 +64,5 @@ export default {
   buildings: buildingsState,
   roads: roadState,
   agentWeights: agentSettings,
+  getPointState,
 };

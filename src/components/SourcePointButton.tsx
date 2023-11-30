@@ -2,18 +2,16 @@ import { useCallback } from "preact/compat";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import state from "../pathmaker/state.ts";
 import { coordinateToCanvasSpace } from "../pathmaker/helpers.ts";
-import { useState } from "preact/hooks";
 
 export default function SourcePointButton() {
-  const [settingSourcePoints, setSettingSourcePoints] = useState(false);
   const onClick = useCallback(async () => {
-    setSettingSourcePoints(true);
+    state.getPointState.value = "source";
     const pos = await Forma.designTool.getPoint();
     if (pos) {
       state.sourcePoints.value = [...state.sourcePoints.value, coordinateToCanvasSpace(pos)];
       await onClick();
     }
-    setSettingSourcePoints(false);
+    state.getPointState.value = undefined;
     return;
   }, []);
 
@@ -25,7 +23,7 @@ export default function SourcePointButton() {
         <p>{state.sourcePoints.value.length} source points added</p>
       ) : null}
       <weave-button variant="outlined" onClick={onClick}>
-        {settingSourcePoints ? "Press escape to complete" : "Add source points"}
+        {state.getPointState.value === "source" ? "Press escape to complete" : "Add source points"}
       </weave-button>
     </div>
   );
