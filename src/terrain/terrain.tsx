@@ -16,12 +16,20 @@ export const SCALE = 1;
 
 export const CANVAS_NAME = "terrain slope";
 
-export default function Terrain() {
+export default function Terrain({ onLoaded }: { onLoaded: () => void }) {
   const projectSettings = DEFAULT_SETTINGS;
   return (
     <>
-      <CalculateAndStore steepnessThreshold={projectSettings.steepnessThreshold} canvas={canvas} />
-      <FromTerrainBuffer steepnessThreshold={projectSettings.steepnessThreshold} canvas={canvas} />
+      <CalculateAndStore
+        steepnessThreshold={projectSettings.steepnessThreshold}
+        onLoaded={onLoaded}
+        canvas={canvas}
+      />
+      <FromTerrainBuffer
+        steepnessThreshold={projectSettings.steepnessThreshold}
+        onLoaded={onLoaded}
+        canvas={canvas}
+      />
     </>
   );
 }

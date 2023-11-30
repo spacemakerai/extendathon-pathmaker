@@ -6,6 +6,7 @@ import { LayerID, updateLayer } from "../pathmaker/layers";
 type Props = {
   steepnessThreshold: number;
   canvas: HTMLCanvasElement;
+  onLoaded: () => void;
 };
 
 type MetadataRaw = {
@@ -19,7 +20,7 @@ type MetadataRaw = {
   height: number;
 };
 
-export default function FromTerrainBuffer({ steepnessThreshold, canvas }: Props) {
+export default function FromTerrainBuffer({ steepnessThreshold, canvas, onLoaded }: Props) {
   const [terrainSlope, setTerrainSlope] = useState<Float32Array>();
   const [metadata, setMetadata] = useState<MetadataRaw>();
   const [hasAutoFetched, setHasAutoFetched] = useState<boolean>(false);
@@ -50,6 +51,7 @@ export default function FromTerrainBuffer({ steepnessThreshold, canvas }: Props)
     );
 
     updateLayer(LayerID.TERRAIN);
+    onLoaded();
   }, [steepnessThreshold, terrainSlope, metadata]);
   if (!metadata || !terrainSlope) {
     return null;

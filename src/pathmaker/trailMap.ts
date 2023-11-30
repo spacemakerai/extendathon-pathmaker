@@ -19,8 +19,10 @@ function update() {
     for (let _instance of Array(100)) {
       let cur = [Math.round(source.x), Math.round(source.y)];
       let step = 0;
-      while (step < 2000) {
+      while (step < 3000) {
         const [ci, cj] = cur;
+        if (ci < 0 || ci >= DIMENSION) break;
+        if (cj < 0 || cj >= DIMENSION) break;
         if (costs[ci][cj] == 0) break;
         const diffs = [
           [-1, -1],

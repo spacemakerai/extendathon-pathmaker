@@ -11,6 +11,7 @@ import { LayerID, updateLayer } from "../pathmaker/layers";
 type Props = {
   steepnessThreshold: number;
   canvas: HTMLCanvasElement;
+  onLoaded: () => void;
 };
 
 function getMinMax(array: Float32Array) {
@@ -36,7 +37,7 @@ const raycaster = new THREE.Raycaster();
 // @ts-ignore
 raycaster.firstHitOnly = true;
 
-export default function CalculateAndStore({ steepnessThreshold, canvas }: Props) {
+export default function CalculateAndStore({ steepnessThreshold, canvas, onLoaded }: Props) {
   const calculateTerrainSteepness = useCallback(async () => {
     const [terrain] = await Forma.geometry.getPathsByCategory({
       category: "terrain",
@@ -100,6 +101,7 @@ export default function CalculateAndStore({ steepnessThreshold, canvas }: Props)
     );
 
     updateLayer(LayerID.TERRAIN);
+    onLoaded();
     await saveCanvas("terrain-steepness-png", canvas, {
       steepnessThreshold: steepnessThreshold,
       minX,
@@ -120,8 +122,8 @@ export default function CalculateAndStore({ steepnessThreshold, canvas }: Props)
   }, [steepnessThreshold]);
 
   return (
-    <button onClick={calculateTerrainSteepness} style="width: 100%;">
-      Recalculate terrain
-    </button>
+    <weave-button onClick={calculateTerrainSteepness} style="width: 100%;">
+      Load terrain
+    </weave-button>
   );
 }

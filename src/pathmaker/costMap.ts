@@ -17,7 +17,9 @@ function update() {
   };
 
   const poi = state.pointsOfInterest.value;
-  const goal = poi.length > 0 ? poi[poi.length - 1] : { x: 500, y: 500 };
+  let goal = poi.length > 0 ? poi[poi.length - 1] : { x: 500, y: 500 };
+  if (goal.x < 0 || goal.x >= DIMENSION) goal = { x: 500, y: 500 };
+  if (goal.y < 0 || goal.y >= DIMENSION) goal = { x: 500, y: 500 };
 
   const ctx = canvas.getContext("2d");
   const terrainCtx = layers.value[LayerID.TERRAIN].canvas.getContext("2d");

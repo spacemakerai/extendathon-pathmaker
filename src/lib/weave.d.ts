@@ -6,6 +6,7 @@ export declare module "preact/src/jsx" {
         variant?: "outlined" | "flat" | "solid";
         density?: "high" | "medium";
         iconposition?: "left" | "right";
+        disabled?: boolean;
       };
       "weave-select": JSX.HTMLAttributes<HTMLElement> & {
         placeholder?: any;
@@ -24,6 +25,13 @@ export declare module "preact/src/jsx" {
         indicator: "caret" | "operator";
       };
       "weave-input": JSX.HTMLAttributes<HTMLElement> & {};
+      "weave-radio-button-group": JSX.HTMLAttributes<HTMLElement> & {};
+      "weave-radio-button": JSX.HTMLAttributes<HTMLOptionElement> & {};
+      "weave-select-option": JSX.HTMLAttributes<HTMLElement> & {
+        disabled?: true;
+        value: any;
+        children?: JSX.Element | string;
+      };
       "weave-select-option": JSX.HTMLAttributes<HTMLElement> & {
         disabled?: true;
         value: any;
