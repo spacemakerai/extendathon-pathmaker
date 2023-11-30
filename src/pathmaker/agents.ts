@@ -35,7 +35,10 @@ function initializeAgents() {
 
     return {
       pos: originPos,
-      velocity: multiply(normalize({ x: random(-1, 1), y: random(-1, 1) }), state.agentWeights.value.agentSpeed),
+      velocity: multiply(
+        normalize({ x: random(-1, 1), y: random(-1, 1) }),
+        state.agentWeights.value.agentSpeed,
+      ),
       targetType: "destination",
       targetIndex: randomInt(state.pointsOfInterest.value.length),
     };
@@ -208,10 +211,16 @@ export function updateAgentCanvas(showAgents: boolean) {
 function runSimulateAndAnimateLoop() {
   updateAgentCanvas(true);
   step();
-  requestAnimationFrame(runSimulateAndAnimateLoop);
+  return requestAnimationFrame(runSimulateAndAnimateLoop);
 }
 
 export function startAgents() {
   initializeAgents();
-  runSimulateAndAnimateLoop();
+  return runSimulateAndAnimateLoop();
+}
+
+export function stopAgents(oldAnimationId: number) {
+  cancelAnimationFrame(oldAnimationId);
+  updateAgentCanvas(false);
+  //TODO: clear state
 }
