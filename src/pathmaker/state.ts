@@ -5,6 +5,7 @@ import buildingCanvas from "./buildingCanvas.ts";
 import roadCanvas from "./roadCanvas.ts";
 import pointOfInterestCanvas from "./pointOfInterestCanvas.ts";
 import sourcePointsCanvas from "./sourcePointsCanvas.ts";
+import { Forma } from "forma-embedded-view-sdk/auto";
 
 export type Point = { x: number; y: number };
 export type AgentSettings = {
@@ -35,11 +36,27 @@ const agentSettings = signal<AgentSettings>({
 });
 
 const numberOfAgents = signal<number>(400);
+const rootUrnState = signal<string | undefined>(undefined);
+
+effect(async () => {
+  if (rootUrnState.value) {
+    buildingsState.value = await buildings.get();
+    roadState.value = await roads.get();
+  }
+});
 
 setTimeout(async () => {
-  buildingsState.value = await buildings.get();
-  roadState.value = await roads.get();
+  const rootUrn = await Forma.proposal.getRootUrn();
+  rootUrnState.value = rootUrn;
 }, 0);
+
+setInterval(async () => {
+  const rootUrn = await Forma.proposal.getRootUrn();
+  if (rootUrnState.value !== rootUrn) {
+    rootUrnState.value = rootUrn;
+  }
+}, 1000);
+
 const roadState = signal<Road[]>([]);
 
 effect(() => {
