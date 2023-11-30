@@ -18,7 +18,7 @@ const pointsOfInterest = signal<Point[]>([]);
 const sourcePoints = signal<Point[]>([]);
 const buildingsState = signal<Building[]>([]);
 const visibleCanvas = signal({ buildings: true, roads: true });
-const agentWeights = signal({
+const agentWeights = signal<Weights>({
   keepSpeed: 1,
   pheromone: 1,
   point: 0.5,
