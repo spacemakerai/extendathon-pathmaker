@@ -53,11 +53,12 @@ function HeapRemove<T>(h: Heap<T>): [number, T] | undefined {
   return head;
 }
 
+export let costs: number[][] = CreateGrid(2, -1);
 export let parents: (undefined | Pos)[][] = CreateGrid(2, undefined);
 
 export function bfs(g: Grid, si: number, sj: number): Grid {
   const dim = g.length;
-  let costs: number[][] = CreateGrid(dim, -1);
+  costs = CreateGrid(dim, -1);
   parents = CreateGrid<undefined | Pos>(dim, undefined);
   type QueueEntry = number[];
   let queue: Heap<QueueEntry> = [[0, [si, sj, -1, -1]]];
@@ -89,7 +90,7 @@ export function bfs(g: Grid, si: number, sj: number): Grid {
       HeapInsert(queue, n_cost, [ni, nj, ci, cj]);
     }
   }
-  console.log(costs);
+  //console.log(costs);
   return costs as Grid;
 }
 

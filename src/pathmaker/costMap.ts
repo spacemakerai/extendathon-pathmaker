@@ -5,6 +5,7 @@ import state from "./state";
 
 export type CostSettings = {
   roadDisount: number;
+  scale: number;
 };
 
 const canvas = getLayerCanvas(LayerID.COST_MAP, "cost map");
@@ -12,6 +13,7 @@ const canvas = getLayerCanvas(LayerID.COST_MAP, "cost map");
 function update() {
   const settings: CostSettings = {
     roadDisount: 0.1,
+    scale: 0.1,
   };
 
   const poi = state.pointsOfInterest.value;
@@ -35,6 +37,7 @@ function update() {
     let val = 10000;
     if (!building) {
       val = terrain + (road ? 0 : settings.roadDisount);
+      val *= settings.scale
     }
     const x = i % DIMENSION;
     const y = Math.floor(i / DIMENSION);
