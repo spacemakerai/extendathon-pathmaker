@@ -38,7 +38,8 @@ function update(agents: Agent[]) {
   ctx.putImageData(imgData, 0, 0);
 
   for (let a of agents) {
-    drawCircle(ctx, a.pos, 2, `rgba(0, 255, 0, ${a.pheromoneLevel * 100})`);
+    const val = a.pheromoneLevel * 0.8;
+    drawCircle(ctx, a.pos, 3, `rgba(0, 255, 0, ${val})`);
   }
 
   Forma.terrain.groundTexture.updateTextureData({ name, canvas });
@@ -52,7 +53,7 @@ function samplePos(pos: Point, radius: number = 10): number {
   const count = imageData.data.length / 4;
   let sum = 0;
   for (let i = 0; i < imageData.data.length; i += 4) {
-    const green = imageData.data[i + 1] * imageData.data[i + 3];
+    const green = (imageData.data[i + 1] * imageData.data[i + 3]) / 255;
     sum += green;
   }
   return sum / count / 255;

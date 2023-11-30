@@ -44,7 +44,7 @@ function initializeAgents() {
       ),
       targetType: "destination",
       targetIndex: randomInt(state.pointsOfInterest.value.length),
-      pheromoneLevel: 0,
+      pheromoneLevel: 1,
     };
   });
 }
@@ -98,11 +98,10 @@ function randomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-const ANGLE_DIFF = Math.PI / 4;
-
 function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
   const DISTANCE = 5;
   const RADIUS = 2;
+  const ANGLE_DIFF = Math.PI / 6;
 
   const frontDir = normalize(velocity);
 
@@ -130,6 +129,7 @@ function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Age
 
 function getRoadEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
   const DISTANCE = 30;
+  const ANGLE_DIFF = Math.PI / 6;
 
   const frontDir = normalize(velocity);
 
@@ -154,6 +154,7 @@ function getRoadEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["p
 
 function getBuildingEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
   const DISTANCE = 3;
+  const ANGLE_DIFF = Math.PI / 3;
 
   const frontDir = normalize(velocity);
 

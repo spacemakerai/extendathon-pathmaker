@@ -1,7 +1,7 @@
 import { Point } from "./state.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { drawCircle } from "./helpers.ts";
-import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
+import { DIMENSION } from "./constants.ts";
 
 export const name = "pathmaker-id";
 
@@ -20,11 +20,11 @@ function initializeCanvas() {
   // ctx.fillStyle = "red";
   // ctx.fillRect(DIMENSION / 4, DIMENSION / 4, DIMENSION / 2, DIMENSION / 2);
 
-  Forma.terrain.groundTexture.add({
-    name,
-    canvas: agentCanvas,
-    position: { x: 0, y: 0, z: CanvasLayerOrder.AGENTS },
-  });
+  // Forma.terrain.groundTexture.add({
+  //   name,
+  //   canvas: agentCanvas,
+  //   position: { x: 0, y: 0, z: CanvasLayerOrder.AGENTS },
+  // });
 }
 
 function draw(points: Point[]) {
@@ -34,7 +34,7 @@ function draw(points: Point[]) {
   ctx.clearRect(0, 0, DIMENSION, DIMENSION);
 
   for (let point of points) {
-    drawCircle(ctx, point, 2, "red");
+    drawCircle(ctx, point, 2, "rgb(0,255,0)");
   }
   Forma.terrain.groundTexture.updateTextureData({ name, canvas: agentCanvas });
 }
