@@ -1,7 +1,7 @@
 import { Point } from "./state.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
-import { DIMENSION } from "./constants.ts";
 import { drawCircle } from "./helpers.ts";
+import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
 
 export const name = "pathmaker-id";
 
@@ -23,7 +23,7 @@ function initializeCanvas() {
   Forma.terrain.groundTexture.add({
     name,
     canvas: agentCanvas,
-    position: { x: 0, y: 0, z: 0 },
+    position: { x: 0, y: 0, z: CanvasLayerOrder.AGENTS },
   });
 }
 

@@ -5,6 +5,8 @@ import { useCallback } from "preact/hooks";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { CANVAS_NAME, SCALE } from "./terrain";
 import { saveCanvas, saveFloatArray } from "./storage";
+import { CanvasLayerOrder, DIMENSION } from "../pathmaker/constants";
+import { canvasSpaceToCoordinate } from "../pathmaker/helpers";
 
 type Props = {
   steepnessThreshold: number;
@@ -61,17 +63,18 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
     const yValues = terrainTriangles.filter((_, i) => i % 3 === 1);
     const [minY, maxY] = getMinMax(yValues);
 
-    const width = Math.floor((maxX - minX) / SCALE);
-    const height = Math.floor((maxY - minY) / SCALE);
+    const width = DIMENSION
+    const height = DIMENSION
     const direction = new THREE.Vector3(0, 0, -1);
     const origin = new THREE.Vector3(0, 0, 10000);
 
     let [minSlope, maxSlope] = [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY];
     let terrainSlope = new Float32Array(width * height).fill(NaN);
     for (let i = 0; i < height; i++) {
-      origin.y = maxY - SCALE / 2 - SCALE * i;
       for (let j = 0; j < width; j++) {
-        origin.x = minX + SCALE / 2 + SCALE * j;
+        const coords = canvasSpaceToCoordinate({ x: j, y: i })
+        origin.x = coords.x
+        origin.y = coords.y
         raycaster.set(origin, direction);
         const intersection = raycaster.intersectObjects(scene.children)[0];
         const normal = intersection!.face!.normal;
@@ -97,16 +100,15 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
     // need to find the reference point of the terrain to place the canvas
     // for this analysis, it's the middle of the terrain
     const position = {
-      x: minX + (width * SCALE) / 2,
-      y: maxY - (height * SCALE) / 2,
-      z: 29, // need to put the texture higher up than original
+      x: 0,
+      y: 0,
+      z: CanvasLayerOrder.TERRAIN,
     };
 
     await Forma.terrain.groundTexture.add({
       name: CANVAS_NAME,
       canvas,
       position,
-      scale: { x: SCALE, y: SCALE },
     });
     await saveCanvas("terrain-steepness-png", canvas, {
       steepnessThreshold: steepnessThreshold,

@@ -1,4 +1,4 @@
-import { DIMENSION } from "./constants.ts";
+import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Building } from "./buildings.ts";
 import { drawTriangle } from "./helpers.ts";
@@ -16,7 +16,7 @@ export function initializeCanvas() {
   Forma.terrain.groundTexture.add({
     name,
     canvas: buildingCanvas,
-    position: { x: 0, y: 0, z: 0 },
+    position: { x: 0, y: 0, z: CanvasLayerOrder.BUILDINGS },
   });
 }
 

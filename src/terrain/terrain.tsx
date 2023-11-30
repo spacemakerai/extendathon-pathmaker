@@ -10,7 +10,7 @@ type Settings = {
 };
 
 const DEFAULT_SETTINGS: Settings = {
-  steepnessThreshold: 25,
+  steepnessThreshold: 40,
 };
 
 export const SCALE = 1;

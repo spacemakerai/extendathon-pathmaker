@@ -5,6 +5,10 @@ export function coordinateToCanvasSpace(pos: { x: number; y: number }): { x: num
   return { x: pos.x + DIMENSION / 2, y: DIMENSION / 2 - pos.y };
 }
 
+export function canvasSpaceToCoordinate(pos: { x: number; y: number }): { x: number; y: number } {
+  return { x: pos.x - DIMENSION / 2, y: DIMENSION / 2 - pos.y };
+}
+
 export function drawTriangle(ctx: CanvasRenderingContext2D, triangle: [Point, Point, Point]) {
   const [_p1, _p2, _p3] = triangle;
   const p1 = coordinateToCanvasSpace(_p1);

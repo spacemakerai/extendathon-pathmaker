@@ -1,4 +1,4 @@
-import { DIMENSION } from "./constants.ts";
+import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Road } from "./roads.ts";
 import { coordinateToCanvasSpace } from "./helpers.ts";
@@ -17,7 +17,7 @@ export function initializeCanvas() {
   Forma.terrain.groundTexture.add({
     name,
     canvas: roadCanvas,
-    position: { x: 0, y: 0, z: 0 },
+    position: { x: 0, y: 0, z: CanvasLayerOrder.ROADS },
   });
 }
 

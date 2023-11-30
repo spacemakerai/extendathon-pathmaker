@@ -1,4 +1,4 @@
-import { DIMENSION } from "./constants.ts";
+import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Point } from "./state.ts";
 import { drawCircle } from "./helpers.ts";
@@ -17,7 +17,7 @@ function initializeCanvas() {
   Forma.terrain.groundTexture.add({
     name,
     canvas,
-    position: { x: 0, y: 0, z: 0 },
+    position: { x: 0, y: 0, z: CanvasLayerOrder.PHEROMONES },
   });
 }
 

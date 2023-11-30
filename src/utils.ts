@@ -28,9 +28,6 @@ export function createCanvasFromSlope(
     const x = Math.floor(i % width);
     const y = Math.floor(i / width);
     let color = colors[Math.floor((terrainSlope[i] - minSlope) / colorGrading)];
-    if (Math.abs(terrainSlope[i]) > threshold) {
-      color = "red";
-    }
     ctx!.fillStyle = color;
     ctx!.fillRect(x, y, 1, 1);
   }
