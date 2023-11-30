@@ -1,6 +1,4 @@
 import GetPointButton from "./components/GetPointButton.tsx";
-import agentCanvas, { initializeCanvas } from "./pathmaker/agentCanvas.ts";
-import agentCanvas from "./pathmaker/agentCanvas.ts";
 import "./pathmaker/agents";
 import { useState } from "preact/hooks";
 import Terrain from "./terrain/terrain";
@@ -16,6 +14,7 @@ if (import.meta.hot) {
 }
 import roadCanvas from "./pathmaker/roadCanvas.ts";
 import buildingCanvas from "./pathmaker/buildingCanvas.ts";
+import agentCanvas from "./pathmaker/agentCanvas.ts";
 
 agentCanvas.initialize();
 pheromone.initialize();
