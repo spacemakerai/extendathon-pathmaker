@@ -18,7 +18,7 @@ function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-const NUMBER_OF_AGENTS = 400;
+const NUMBER_OF_AGENTS = 200;
 const SPEED = 4;
 
 const agents: Agent[] = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => ({

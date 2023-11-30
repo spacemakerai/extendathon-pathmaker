@@ -2,6 +2,7 @@ import { DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Road } from "./roads.ts";
 import { coordinateToCanvasSpace } from "./helpers.ts";
+import { Point } from "./state.ts";
 
 export const name = "roads-canvas";
 
@@ -44,7 +45,22 @@ function drawRoad(ctx: CanvasRenderingContext2D, road: Road) {
   ctx.stroke();
 }
 
+function samplePos(pos: Point, radius: number = 10): number {
+  if (!roadCanvas) return 0;
+  const ctx = roadCanvas.getContext("2d") as CanvasRenderingContext2D;
+  if (!ctx) return 0;
+  const imageData = ctx.getImageData(pos.x - radius, pos.y - radius, radius * 2, radius * 2);
+  const count = imageData.data.length / 4;
+  let sum = 0;
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const green = imageData.data[i + 1];
+    sum += green;
+  }
+  return sum / count / 255;
+}
+
 export default {
   draw,
   initialize: initializeCanvas,
+  samplePos,
 };
