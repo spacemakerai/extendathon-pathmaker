@@ -19,10 +19,12 @@ import roadCanvas from "./pathmaker/roadCanvas.ts";
 import buildingCanvas from "./pathmaker/buildingCanvas.ts";
 import agentCanvas from "./pathmaker/agentCanvas.ts";
 import { signal } from "@preact/signals";
+import pointOfInterestCanvas from "./pathmaker/pointOfInterestCanvas.ts";
 
 agentCanvas.initialize();
 pheromone.initialize();
 roadCanvas.initialize();
+pointOfInterestCanvas.initialize();
 buildingCanvas.initialize();
 
 export default function App() {

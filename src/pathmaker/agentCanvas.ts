@@ -1,4 +1,4 @@
-import state, { Point } from "./state.ts";
+import { Point } from "./state.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { DIMENSION } from "./constants.ts";
 import { drawCircle } from "./helpers.ts";
@@ -32,10 +32,6 @@ function draw(points: Point[]) {
   const ctx = agentCanvas.getContext("2d") as CanvasRenderingContext2D;
   if (!ctx) return;
   ctx.clearRect(0, 0, DIMENSION, DIMENSION);
-
-  for (let point of state.points.value) {
-    drawCircle(ctx, point, 5, "blue");
-  }
 
   for (let point of points) {
     drawCircle(ctx, point, 5, "red");

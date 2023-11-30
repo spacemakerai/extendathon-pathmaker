@@ -3,6 +3,7 @@ import buildings, { Building } from "./buildings.ts";
 import roads, { Road } from "./roads.ts";
 import buildingCanvas from "./buildingCanvas.ts";
 import roadCanvas from "./roadCanvas.ts";
+import pointOfInterestCanvas from "./pointOfInterestCanvas.ts";
 
 export type Point = { x: number; y: number };
 
@@ -25,6 +26,10 @@ effect(() => {
   if (visibleCanvas.value.roads) {
     roadCanvas.draw(roadState.value);
   }
+});
+
+effect(() => {
+  pointOfInterestCanvas.draw(points.value);
 });
 
 export default {
