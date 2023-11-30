@@ -7,7 +7,7 @@ import agentCanvas from "../pathmaker/agentCanvas.ts";
 import roads from "../pathmaker/roads.ts";
 import { coordinateToCanvasSpace } from "../pathmaker/helpers.ts";
 
-export default function GetPointButton() {
+export default function POIButton() {
   const onClick = useCallback(async () => {
     const pos = await Forma.designTool.getPoint();
     if (pos) {
@@ -19,7 +19,10 @@ export default function GetPointButton() {
   }, []);
 
   return (
-    <div class="row">
+    <div>
+      <h3>Points of interest</h3>
+      <p className="helpText">Stores, bus stops, kindergartens, etc.</p>
+      {state.points.value.length > 0 ? <p>{state.points.value.length} POIs added</p> : null}
       <weave-button variant="outlined" onClick={onClick}>
         Add POI (store, bus stop, etc.)
       </weave-button>

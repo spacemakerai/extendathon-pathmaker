@@ -1,4 +1,4 @@
-import GetPointButton from "./components/GetPointButton.tsx";
+import POIButton from "./components/POIButton.tsx";
 import "./pathmaker/agents";
 import { useState } from "preact/hooks";
 import Terrain from "./terrain/terrain";
@@ -33,7 +33,7 @@ export default function App() {
   return (
     <>
       <h1>Pathmaker</h1>
-      <GetPointButton />
+      <POIButton />
       {!simulationRunningState.value && (
         <button
           onClick={() => {

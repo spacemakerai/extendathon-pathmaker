@@ -49,9 +49,6 @@ weave-select {
 
 .helpText {
   display: flex;
-  justify-content: flex-end;
-
-  width: 20px;
 
   font-weight: 600;
   font-size: 11px;
