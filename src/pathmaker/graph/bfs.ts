@@ -6,10 +6,6 @@ export function CreateGrid<T>(dim: number, initial: T): T[][] {
   return Array.apply(null, Array(dim)).map(() => Array.apply(null, Array(dim)).map(() => initial));
 }
 
-function Print<T>(h: Heap<T>) {
-  return h.map(([n, _]) => n);
-}
-
 function Swap<T>(h: Heap<T>, i: number, j: number) {
   const temp = h[i];
   h[i] = h[j];

@@ -1,7 +1,6 @@
 import { signal } from "@preact/signals";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { DIMENSION } from "./constants";
-import { bfs } from "./graph/bfs";
 
 // Ordered according to z-index
 export enum LayerID {
