@@ -23,7 +23,11 @@ export type LayerList = Record<number, Layer>;
 export type LayerVisibility = Record<number, boolean>;
 
 export const layers = signal<LayerList>({});
-export const hiddenLayers = signal<LayerVisibility>({});
+export const hiddenLayers = signal<LayerVisibility>({
+  [LayerID.TERRAIN]: false,
+  [LayerID.BUILDINGS]: false,
+  [LayerID.ROADS]: false,
+});
 
 export function showLayer(id: LayerID) {
   if (!layers.value[id]) return;
