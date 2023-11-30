@@ -44,6 +44,14 @@ weave-select {
   max-width: 70%;
 }
 
+.helpDescription {
+  font: var(--11-regular);
+}
+
+.helpTitle {
+  font: var(--11-bold);
+}
+
 .helpText {
   display: flex;
 

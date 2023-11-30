@@ -32,6 +32,14 @@ export default function App() {
   return (
     <>
       <h3 className={"title"}>Pathmaker</h3>
+      <p className={"helpTitle"}>
+        Pedestrian Flow Prediction: Understand city movement patterns effortlessly.
+      </p>
+      <p className={"helpText"}>
+        This feature uses evolutionary algorithms to predict pedestrian pathways based on
+        residential locations and popular destinations. Gain valuable insights for informed urban
+        planning.
+      </p>
       <SourcePointButton />
       <POIButton />
       <div className={styles.Section}>
