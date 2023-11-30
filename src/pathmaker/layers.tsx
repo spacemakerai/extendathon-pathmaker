@@ -25,7 +25,6 @@ export type LayerVisibility = Record<number, boolean>;
 export const layers = signal<LayerList>({});
 export const hiddenLayers = signal<LayerVisibility>({
   [LayerID.TERRAIN]: false,
-  [LayerID.BUILDINGS]: false,
   [LayerID.ROADS]: false,
 });
 

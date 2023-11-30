@@ -28,7 +28,7 @@ function update(pos: Point[]) {
 
   for (let i = 0; i < data.length; i += 4) {
     data[i + 3] = data[i + 3] * state.agentWeights.value.pheromoneDecay;
-    if (data[i + 3] < 0.1) {
+    if (data[i + 3] < 30) {
       data[i + 3] = 0;
       data[i + 1] = 0;
     }
@@ -51,7 +51,7 @@ function samplePos(pos: Point, radius: number = 10): number {
   const count = imageData.data.length / 4;
   let sum = 0;
   for (let i = 0; i < imageData.data.length; i += 4) {
-    const green = imageData.data[i + 1];
+    const green = imageData.data[i + 1] * imageData.data[i + 3];
     sum += green;
   }
   return sum / count / 255;

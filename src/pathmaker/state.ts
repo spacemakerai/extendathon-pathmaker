@@ -12,6 +12,8 @@ export type AgentSettings = {
   pheromone: number;
   point: number;
   road: number;
+  building: number;
+  random: number;
   agentCount: number;
   pheromoneDecay: number;
   agentSpeed: number;
@@ -27,9 +29,11 @@ const agentSettings = signal<AgentSettings>({
   pheromone: 1,
   point: 0.5,
   road: 1,
-  agentCount: 1000,
+  agentCount: 200,
   pheromoneDecay: 0.9,
   agentSpeed: 4,
+  building: 5,
+  random: 0.2,
 });
 
 setTimeout(async () => {

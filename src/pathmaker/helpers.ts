@@ -19,7 +19,7 @@ export function drawTriangle(ctx: CanvasRenderingContext2D, triangle: [Point, Po
   ctx.lineTo(p2.x, p2.y);
   ctx.lineTo(p3.x, p3.y);
   ctx.lineTo(p1.x, p1.y);
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "red";
   ctx.fill();
 }
 

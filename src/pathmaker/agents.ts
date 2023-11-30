@@ -3,6 +3,7 @@ import { DIMENSION } from "./constants.ts";
 import pheromone from "./pheromoneCanvas.ts";
 import state, { Point } from "./state.ts";
 import roadCanvas from "./roadCanvas.ts";
+import buildingCanvas from "./buildingCanvas.ts";
 
 type Agent = {
   pos: {
@@ -68,6 +69,9 @@ function multiply(vec: Point, factor: number): Point {
 
 function setLength(vec: Point, length: number) {
   const dist = Math.sqrt(vec.x ** 2 + vec.y ** 2);
+  if (dist < 1e-10) {
+    return { x: 0, y: 0 };
+  }
   return { x: (vec.x / dist) * length, y: (vec.y / dist) * length };
 }
 
@@ -145,6 +149,30 @@ function getRoadEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["p
   }
 }
 
+function getBuildingEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
+  const DISTANCE = 3;
+
+  const frontDir = normalize(velocity);
+
+  const angle = Math.atan2(frontDir.y, frontDir.x);
+  const rightAngle = angle - ANGLE_DIFF;
+  const rightDir = { x: Math.cos(rightAngle), y: Math.sin(rightAngle) };
+  const leftAngle = angle + ANGLE_DIFF;
+  const leftDir = { x: Math.cos(leftAngle), y: Math.sin(leftAngle) };
+
+  const front = buildingCanvas.samplePos(add(pos, multiply(frontDir, DISTANCE)));
+  const right = buildingCanvas.samplePos(add(pos, multiply(rightDir, DISTANCE)));
+  const left = buildingCanvas.samplePos(add(pos, multiply(leftDir, DISTANCE)));
+
+  if (left > front && left > right) {
+    return normalize(multiply(rightDir, right));
+  } else if (right > left && right > front) {
+    return normalize(multiply(leftDir, left));
+  } else {
+    return multiply(normalize(multiply(frontDir, front)), -1);
+  }
+}
+
 function getTargetPosition(agent: Agent): Point | undefined {
   let target: Point | undefined;
   if (agent.targetType === "destination") {
@@ -167,14 +195,18 @@ function updateVelocity(agent: Agent): Agent["velocity"] {
   const pheromoneEffect = getPheromoneEffect(agent.pos, agent.velocity);
   const pointEffect = getPointEffect(agent);
   const roadEffect = getRoadEffect(agent.pos, agent.velocity);
+  const buildingEffect = getBuildingEffect(agent.pos, agent.velocity);
 
-  const sum = adds([
+  const effects = [
     multiply(normalize(agent.velocity), state.agentWeights.value.keepSpeed),
     multiply(pheromoneEffect, state.agentWeights.value.pheromone),
     multiply(pointEffect, state.agentWeights.value.point),
     multiply(roadEffect, state.agentWeights.value.road),
-  ]);
+    multiply(buildingEffect, state.agentWeights.value.building),
+    multiply({ x: random(-1, 1), y: random(-1, 1) }, state.agentWeights.value.random),
+  ];
 
+  const sum = adds(effects);
   return setLength(sum, state.agentWeights.value.agentSpeed);
 }
 
