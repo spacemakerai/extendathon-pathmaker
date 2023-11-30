@@ -10,6 +10,7 @@ import agentCanvas from "./pathmaker/agentCanvas.ts";
 import pointOfInterestCanvas from "./pathmaker/pointOfInterestCanvas.ts";
 import SourcePointButton from "./components/SourcePointButton.tsx";
 import sourcePointsCanvas from "./pathmaker/sourcePointsCanvas.ts";
+import Weights from "./components/Weights.tsx";
 
 const simulationRunningState = signal(false);
 
@@ -35,6 +36,7 @@ export default function App() {
       <h1>Pathmaker</h1>
       <SourcePointButton />
       <POIButton />
+      <Weights />
       {!simulationRunningState.value && (
         <button
           onClick={() => {

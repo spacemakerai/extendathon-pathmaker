@@ -7,11 +7,24 @@ import pointOfInterestCanvas from "./pointOfInterestCanvas.ts";
 import sourcePointsCanvas from "./sourcePointsCanvas.ts";
 
 export type Point = { x: number; y: number };
+export type Weights = {
+  keepSpeed: number;
+  pheromone: number;
+  point: number;
+  road: number;
+};
 
 const pointsOfInterest = signal<Point[]>([]);
 const sourcePoints = signal<Point[]>([]);
 const buildingsState = signal<Building[]>([]);
 const visibleCanvas = signal({ buildings: true, roads: true });
+const agentWeights = signal({
+  keepSpeed: 2,
+  pheromone: 1,
+  point: 0.5,
+  road: 5,
+});
+
 setTimeout(async () => {
   buildingsState.value = await buildings.get();
   roadState.value = await roads.get();
@@ -43,4 +56,5 @@ export default {
   sourcePoints,
   buildings: buildingsState,
   roads: roadState,
+  agentWeights,
 };

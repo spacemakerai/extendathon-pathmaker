@@ -13,6 +13,10 @@ export declare module "preact/src/jsx" {
         children: JSX.Element[];
         onChange: (e: CustomEvent<{ value: string; text: string }>) => void;
       };
+      "weave-slider": JSX.HTMLAttributes<HTMLElement> & {
+        variant: "discrete" | "continuous";
+      };
+      "weave-input": JSX.HTMLAttributes<HTMLElement> & {};
       "weave-select-option": JSX.HTMLAttributes<HTMLElement> & {
         disabled?: true;
         value: any;

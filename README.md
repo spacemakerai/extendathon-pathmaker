@@ -86,7 +86,7 @@ Relevant resources are included in `index.html`:
     type="module"
     src="https://app.autodeskforma.eu/design-system/v2/weave/components/dropdown/weave-select.js"
   ></script>
-  <title>Shadow study</title>
+  <title>Pathmaker</title>
 </head>
 ```
 

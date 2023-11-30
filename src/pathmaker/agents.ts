@@ -22,11 +22,6 @@ function random(min: number, max: number) {
 const NUMBER_OF_AGENTS = 1000;
 const SPEED = 4;
 
-const KEEP_SPEED_WEIGHT = 1;
-const PHEROMONE_WEIGHT = 1;
-const POINT_WEIGHT = 0.5;
-const ROAD_WEIGHT = 1;
-
 const agents: Agent[] = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => ({
   pos: { x: random(0, DIMENSION), y: random(0, DIMENSION) },
   velocity: multiply(normalize({ x: random(-1, 1), y: random(-1, 1) }), SPEED),
@@ -147,10 +142,10 @@ function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["
   const roadEffect = getRoadEffect(pos, velocity);
 
   const sum = adds([
-    multiply(normalize(velocity), KEEP_SPEED_WEIGHT),
-    multiply(pheromoneEffect, PHEROMONE_WEIGHT),
-    multiply(pointEffect, POINT_WEIGHT),
-    multiply(roadEffect, ROAD_WEIGHT),
+    multiply(normalize(velocity), state.agentWeights.value.keepSpeed),
+    multiply(pheromoneEffect, state.agentWeights.value.pheromone),
+    multiply(pointEffect, state.agentWeights.value.point),
+    multiply(roadEffect, state.agentWeights.value.road),
   ]);
 
   return setLength(sum, SPEED);
