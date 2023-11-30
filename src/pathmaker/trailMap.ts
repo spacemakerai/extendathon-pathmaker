@@ -1,5 +1,5 @@
 import { DIMENSION } from "./constants";
-import { CreateGrid, costs, parents } from "./graph/bfs";
+import { CreateGrid, costs } from "./graph/bfs";
 import { LayerID, getLayerCanvas, updateLayer } from "./layers";
 import state from "./state";
 

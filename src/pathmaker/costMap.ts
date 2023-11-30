@@ -37,7 +37,7 @@ function update() {
     let val = 10000;
     if (!building) {
       val = terrain + (road ? 0 : settings.roadDisount);
-      val *= settings.scale
+      val *= settings.scale;
     }
     const x = i % DIMENSION;
     const y = Math.floor(i / DIMENSION);
