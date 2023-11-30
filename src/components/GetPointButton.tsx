@@ -14,7 +14,6 @@ export default function GetPointButton() {
       const buildingTriangles = await buildings.get();
       const roadLines = await roads.get();
       agentCanvas.draw(state.points.value, roadLines, buildingTriangles);
-
     }
   }, []);
 

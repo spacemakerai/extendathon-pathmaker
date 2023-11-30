@@ -21,17 +21,14 @@ async function get(): Promise<Building[]> {
     for (let i = 0; i < building3d.length; i += 9) {
       const x1 = building3d[i];
       const y1 = building3d[i + 1];
-      const z1 = building3d[i + 2];
       const x2 = building3d[i + 3];
       const y2 = building3d[i + 4];
-      const z2 = building3d[i + 5];
       const x3 = building3d[i + 6];
       const y3 = building3d[i + 7];
-      const z3 = building3d[i + 8];
       triangles.push([
-        { x: x1, y: y1, z: z1 },
-        { x: x2, y: y2, z: z2 },
-        { x: x3, y: y3, z: z3 },
+        { x: x1, y: y1 },
+        { x: x2, y: y2 },
+        { x: x3, y: y3 },
       ]);
     }
     return { triangles };

@@ -55,7 +55,7 @@ function drawRoad(ctx: CanvasRenderingContext2D, road: Road) {
     ctx.lineTo(point.x, point.y);
   }
   ctx.lineWidth = 4;
-  ctx.strokeStyle = "#ccc"
+  ctx.strokeStyle = "#ccc";
   ctx.stroke();
 }
 
