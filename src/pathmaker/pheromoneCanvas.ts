@@ -29,7 +29,7 @@ function update(agents: Agent[]) {
 
   for (let i = 0; i < data.length; i += 4) {
     data[i + 3] = data[i + 3] * state.agentWeights.value.pheromoneDecay;
-    if (data[i + 3] < 30) {
+    if (data[i + 3] < 100) {
       data[i + 3] = 0;
       data[i + 1] = 0;
     }

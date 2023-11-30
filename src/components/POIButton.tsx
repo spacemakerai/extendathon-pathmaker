@@ -26,6 +26,9 @@ export default function POIButton() {
           ? "Press escape to complete"
           : "Add POI (store, bus stop, etc.)"}
       </weave-button>
+      <weave-button variant="flat" onClick={() => (state.pointsOfInterest.value = [])}>
+        Clear
+      </weave-button>
       {state.pointsOfInterest.value.length > 0 ? (
         <p>{state.pointsOfInterest.value.length} POIs added</p>
       ) : null}

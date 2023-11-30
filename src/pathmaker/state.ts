@@ -25,7 +25,7 @@ const sourcePoints = signal<Point[]>([]);
 const buildingsState = signal<Building[]>([]);
 const visibleCanvas = signal({ buildings: true, roads: true });
 const agentSettings = signal<AgentSettings>({
-  keepSpeed: 1,
+  keepSpeed: 0.5,
   pheromone: 1,
   point: 0.6,
   road: 0.1,

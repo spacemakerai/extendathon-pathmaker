@@ -36,6 +36,7 @@ export default function App() {
       <div className={styles.Section}>
         <h3>Simulation</h3>
         <weave-button
+          variant={"solid"}
           onClick={() => {
             if (agentsRunning.value) {
               stopAgents();

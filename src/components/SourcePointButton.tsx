@@ -23,6 +23,9 @@ export default function SourcePointButton() {
       <weave-button variant="outlined" onClick={onClick}>
         {state.getPointState.value === "source" ? "Press escape to complete" : "Add source points"}
       </weave-button>
+      <weave-button variant="flat" onClick={() => (state.sourcePoints.value = [])}>
+        Clear
+      </weave-button>
       {state.sourcePoints.value.length > 0 ? (
         <p>{state.sourcePoints.value.length} source points added</p>
       ) : null}
