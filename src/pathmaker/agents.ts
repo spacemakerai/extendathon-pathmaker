@@ -13,19 +13,37 @@ type Agent = {
     x: number;
     y: number;
   };
+  targetType: "origin" | "destination";
+  targetIndex: number;
 };
 
 function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-const NUMBER_OF_AGENTS = 1000;
+const NUMBER_OF_AGENTS = 100;
 const SPEED = 4;
 
-const agents: Agent[] = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => ({
-  pos: { x: random(0, DIMENSION), y: random(0, DIMENSION) },
-  velocity: multiply(normalize({ x: random(-1, 1), y: random(-1, 1) }), SPEED),
-}));
+let agents: Agent[] = [];
+
+function initializeAgents() {
+  agents = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => {
+    const originIndex = randomInt(state.sourcePoints.value.length);
+    let originPos: Point | undefined;
+    if (originIndex < state.sourcePoints.value.length) {
+      originPos = state.sourcePoints.value[originIndex];
+    } else {
+      originPos = { x: random(0, DIMENSION), y: random(0, DIMENSION) };
+    }
+
+    return {
+      pos: originPos,
+      velocity: multiply(normalize({ x: random(-1, 1), y: random(-1, 1) }), SPEED),
+      targetType: "destination",
+      targetIndex: randomInt(state.pointsOfInterest.value.length),
+    };
+  });
+}
 
 //@ts-ignore
 function bound(val: number, max: number) {
@@ -67,6 +85,10 @@ function adds(vs: Point[]): Point {
 
 function sub(v1: Point, v2: Point): Point {
   return { x: v1.x - v2.x, y: v1.y - v2.y };
+}
+
+function randomInt(max: number) {
+  return Math.floor(Math.random() * (max + 1));
 }
 
 const ANGLE_DIFF = Math.PI / 4;
@@ -123,33 +145,50 @@ function getRoadEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["p
   }
 }
 
-function getPointEffect(pos: Agent["pos"]) {
-  const effects: Point[] = [];
-
-  for (let point of state.pointsOfInterest.value) {
-    const diff = sub(point, pos);
-    const distance = length(diff);
-    const scaled = multiply(diff, 1 / distance ** 2);
-    effects.push(scaled);
+function getTargetPosition(agent: Agent): Point | undefined {
+  let target: Point | undefined;
+  if (agent.targetType === "destination") {
+    target = state.pointsOfInterest.value[agent.targetIndex];
+  } else {
+    target = state.sourcePoints.value[agent.targetIndex];
   }
-
-  const sum = adds(effects);
-  return normalize(sum);
+  return target;
 }
 
-function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["velocity"] {
-  const pheromoneEffect = getPheromoneEffect(pos, velocity);
-  const pointEffect = getPointEffect(pos);
-  const roadEffect = getRoadEffect(pos, velocity);
+function getPointEffect(agent: Agent) {
+  const target = getTargetPosition(agent);
+
+  if (!target) return { x: 0, y: 0 };
+
+  return normalize(sub(target, agent.pos));
+}
+
+function updateVelocity(agent: Agent): Agent["velocity"] {
+  const pheromoneEffect = getPheromoneEffect(agent.pos, agent.velocity);
+  const pointEffect = getPointEffect(agent);
+  const roadEffect = getRoadEffect(agent.pos, agent.velocity);
 
   const sum = adds([
-    multiply(normalize(velocity), state.agentWeights.value.keepSpeed),
+    multiply(normalize(agent.velocity), state.agentWeights.value.keepSpeed),
     multiply(pheromoneEffect, state.agentWeights.value.pheromone),
     multiply(pointEffect, state.agentWeights.value.point),
     multiply(roadEffect, state.agentWeights.value.road),
   ]);
 
   return setLength(sum, SPEED);
+}
+
+const REACHED_DESTINATION_THRESHOLD = 10;
+
+function updateTarget(agent: Agent) {
+  const target = getTargetPosition(agent);
+  if (!target || length(sub(target, agent.pos)) < REACHED_DESTINATION_THRESHOLD) {
+    agent.targetType = agent.targetType === "destination" ? "origin" : "destination";
+    agent.targetIndex =
+      agent.targetType === "destination"
+        ? randomInt(state.pointsOfInterest.value.length)
+        : randomInt(state.sourcePoints.value.length);
+  }
 }
 
 function step() {
@@ -159,7 +198,8 @@ function step() {
       a.velocity = multiply(a.velocity, -1);
     }
     a.pos = move(a.pos, a.velocity);
-    a.velocity = updateVelocity(a.pos, a.velocity);
+    a.velocity = updateVelocity(a);
+    updateTarget(a);
   }
   pheromone.update(agents.map((a) => a.pos));
 }
@@ -168,8 +208,13 @@ export function updateAgentCanvas(showAgents: boolean) {
   agentCanvas.draw(showAgents ? agents.map((a) => a.pos) : []);
 }
 
-export function runSimulateAndAnimateLoop() {
+function runSimulateAndAnimateLoop() {
   updateAgentCanvas(true);
   step();
   requestAnimationFrame(runSimulateAndAnimateLoop);
+}
+
+export function startAgents() {
+  initializeAgents();
+  runSimulateAndAnimateLoop();
 }

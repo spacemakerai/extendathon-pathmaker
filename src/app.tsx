@@ -3,7 +3,7 @@ import "./pathmaker/agents";
 import Terrain from "./terrain/terrain";
 import pheromone from "./pathmaker/pheromoneCanvas.ts";
 import { signal } from "@preact/signals";
-import { runSimulateAndAnimateLoop, updateAgentCanvas } from "./pathmaker/agents";
+import { startAgents, updateAgentCanvas } from "./pathmaker/agents";
 import roadCanvas from "./pathmaker/roadCanvas.ts";
 import buildingCanvas from "./pathmaker/buildingCanvas.ts";
 import agentCanvas from "./pathmaker/agentCanvas.ts";
@@ -41,7 +41,7 @@ export default function App() {
         <button
           onClick={() => {
             simulationRunningState.value = !simulationRunningState.value;
-            runSimulateAndAnimateLoop();
+            startAgents();
           }}
         >
           Run agent simulation
