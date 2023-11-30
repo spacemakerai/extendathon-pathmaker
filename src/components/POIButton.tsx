@@ -21,10 +21,13 @@ export default function POIButton() {
     <div className={styles.Section}>
       <h3>Points of interest</h3>
       <p className="helpText">Stores, bus stops, kindergartens, etc.</p>
-      <weave-button variant="outlined" onClick={onClick}>
-        {state.getPointState.value === "poi"
-          ? "Press escape to complete"
-          : "Add POI (store, bus stop, etc.)"}
+      {state.getPointState.value === "poi" ? <div>Press escape to complete</div> : null}
+      <weave-button
+        variant="outlined"
+        onClick={onClick}
+        disabled={state.getPointState.value === "poi"}
+      >
+        Add POIs
       </weave-button>
       <weave-button variant="flat" onClick={() => (state.pointsOfInterest.value = [])}>
         Clear

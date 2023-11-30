@@ -20,8 +20,13 @@ export default function SourcePointButton() {
     <div className={styles.Section}>
       <h3>Source points</h3>
       <p className="helpText">Where people come from: their homes, subways, etc.</p>
-      <weave-button variant="outlined" onClick={onClick}>
-        {state.getPointState.value === "source" ? "Press escape to complete" : "Add source points"}
+      {state.getPointState.value === "source" ? <div>Press escape to complete</div> : null}
+      <weave-button
+        variant="outlined"
+        onClick={onClick}
+        disabled={state.getPointState.value === "source"}
+      >
+        Add source points
       </weave-button>
       <weave-button variant="flat" onClick={() => (state.sourcePoints.value = [])}>
         Clear
