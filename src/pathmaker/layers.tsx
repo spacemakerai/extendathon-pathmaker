@@ -11,6 +11,7 @@ export enum LayerID {
   AGENTS,
   SOURCES,
   POI,
+  COST_MAP,
 }
 
 export type Layer = {

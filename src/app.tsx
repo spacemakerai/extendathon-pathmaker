@@ -10,6 +10,7 @@ import SourcePointButton from "./components/SourcePointButton.tsx";
 import sourcePointsCanvas from "./pathmaker/sourcePointsCanvas.ts";
 import Weights from "./components/Weights.tsx";
 import Layers from "./pathmaker/layers.tsx";
+import costMap from "./pathmaker/costMap.ts";
 
 const simulationRunningState = signal<number | undefined>(undefined);
 
@@ -51,6 +52,7 @@ export default function App() {
       </button>
 
       <Terrain />
+      <button onClick={costMap.update}>Update cost map</button>
       <Layers />
     </>
   );
