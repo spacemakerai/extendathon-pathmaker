@@ -11,17 +11,15 @@ const colors = [
   "rgba(23, 115, 13, 0.9)",
 ];
 
-export function createCanvasFromSlope(
+export function renderIntoCanvasFromSlope(
   terrainSlope: Float32Array,
   width: number,
-  height: number,
+  _height: number,
   _maxSlope: number,
   minSlope: number,
   threshold: number,
-): HTMLCanvasElement {
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
+  canvas: HTMLCanvasElement,
+) {
   const ctx = canvas.getContext("2d");
   const colorGrading = threshold / colors.length;
   for (let i = 0; i < terrainSlope.length; i++) {
@@ -31,8 +29,6 @@ export function createCanvasFromSlope(
     ctx!.fillStyle = color;
     ctx!.fillRect(x, y, 1, 1);
   }
-
-  return canvas;
 }
 
 export function degreesToRadians(degrees: number): number {

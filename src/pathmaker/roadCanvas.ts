@@ -1,25 +1,12 @@
-import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
-import { Forma } from "forma-embedded-view-sdk/auto";
+import { DIMENSION } from "./constants.ts";
 import { Road } from "./roads.ts";
 import { coordinateToCanvasSpace, sampleChannelForPos } from "./helpers.ts";
 import { Point } from "./state.ts";
+import { LayerID, getLayerCanvas, updateLayer } from "./layers.tsx";
 
 export const name = "roads-canvas";
 
-let roadCanvas: HTMLCanvasElement | undefined;
-
-export function initializeCanvas() {
-  console.log("initialize");
-  roadCanvas = document.createElement("canvas", {});
-  roadCanvas.height = DIMENSION;
-  roadCanvas.width = DIMENSION;
-
-  Forma.terrain.groundTexture.add({
-    name,
-    canvas: roadCanvas,
-    position: { x: 0, y: 0, z: CanvasLayerOrder.ROADS },
-  });
-}
+const roadCanvas = getLayerCanvas(LayerID.ROADS, "roads");
 
 function draw(roads: Road[]) {
   if (!roadCanvas) return;
@@ -29,7 +16,7 @@ function draw(roads: Road[]) {
   for (let road of roads) {
     drawRoad(ctx, road);
   }
-  Forma.terrain.groundTexture.updateTextureData({ name, canvas: roadCanvas });
+  updateLayer(LayerID.ROADS);
 }
 
 function drawRoad(ctx: CanvasRenderingContext2D, road: Road) {
@@ -54,6 +41,5 @@ function samplePos(pos: Point) {
 
 export default {
   draw,
-  initialize: initializeCanvas,
   samplePos,
 };

@@ -3,14 +3,13 @@ import "./pathmaker/agents";
 import Terrain from "./terrain/terrain";
 import pheromone from "./pathmaker/pheromoneCanvas.ts";
 import { signal } from "@preact/signals";
-import { startAgents, updateAgentCanvas } from "./pathmaker/agents";
-import roadCanvas from "./pathmaker/roadCanvas.ts";
-import buildingCanvas from "./pathmaker/buildingCanvas.ts";
+import { startAgents } from "./pathmaker/agents";
 import agentCanvas from "./pathmaker/agentCanvas.ts";
 import pointOfInterestCanvas from "./pathmaker/pointOfInterestCanvas.ts";
 import SourcePointButton from "./components/SourcePointButton.tsx";
 import sourcePointsCanvas from "./pathmaker/sourcePointsCanvas.ts";
 import Weights from "./components/Weights.tsx";
+import Layers from "./pathmaker/layers.tsx";
 
 const simulationRunningState = signal(false);
 
@@ -25,10 +24,8 @@ if (import.meta.hot) {
 
 agentCanvas.initialize();
 pheromone.initialize();
-roadCanvas.initialize();
 pointOfInterestCanvas.initialize();
 sourcePointsCanvas.initialize();
-buildingCanvas.initialize();
 
 export default function App() {
   return (
@@ -47,16 +44,8 @@ export default function App() {
           Run agent simulation
         </button>
       )}
-      {!simulationRunningState.value && (
-        <button
-          onClick={() => {
-            updateAgentCanvas(false);
-          }}
-        >
-          Update canvas manually
-        </button>
-      )}
       <Terrain />
+      <Layers />
     </>
   );
 }

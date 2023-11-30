@@ -1,11 +1,11 @@
-import { Forma } from "forma-embedded-view-sdk/auto";
 import { useCallback, useEffect, useState } from "preact/hooks";
-import { createCanvasFromSlope, degreesToRadians } from "../utils";
+import { renderIntoCanvasFromSlope, degreesToRadians } from "../utils";
 import { getFloat32Array } from "./storage";
-import { CanvasLayerOrder } from "../pathmaker/constants";
+import { LayerID, updateLayer } from "../pathmaker/layers";
 
 type Props = {
   steepnessThreshold: number;
+  canvas: HTMLCanvasElement;
 };
 
 type MetadataRaw = {
@@ -19,7 +19,7 @@ type MetadataRaw = {
   height: number;
 };
 
-export default function FromTerrainBuffer({ steepnessThreshold }: Props) {
+export default function FromTerrainBuffer({ steepnessThreshold, canvas }: Props) {
   const [terrainSlope, setTerrainSlope] = useState<Float32Array>();
   const [metadata, setMetadata] = useState<MetadataRaw>();
   const [hasAutoFetched, setHasAutoFetched] = useState<boolean>(false);
@@ -39,27 +39,17 @@ export default function FromTerrainBuffer({ steepnessThreshold }: Props) {
     if (!metadata || !terrainSlope) return;
 
     const { width, height, maxSlope, minSlope } = metadata;
-    const canvas = createCanvasFromSlope(
+    renderIntoCanvasFromSlope(
       terrainSlope,
       width,
       height,
       maxSlope,
       minSlope,
       degreesToRadians(steepnessThreshold),
+      canvas,
     );
 
-    // need to find the reference point of the terrain to place the canvas
-    // for this analysis, it's the middle of the terrain
-    const position = {
-      x: 0,
-      y: 0,
-      z: CanvasLayerOrder.TERRAIN,
-    };
-    await Forma.terrain.groundTexture.add({
-      name: "terrain slope",
-      canvas,
-      position,
-    });
+    updateLayer(LayerID.TERRAIN);
   }, [steepnessThreshold, terrainSlope, metadata]);
   if (!metadata || !terrainSlope) {
     return null;

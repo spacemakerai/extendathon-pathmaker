@@ -1,24 +1,11 @@
-import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
-import { Forma } from "forma-embedded-view-sdk/auto";
+import { DIMENSION } from "./constants.ts";
 import { Building } from "./buildings.ts";
 import { drawTriangle } from "./helpers.ts";
+import { LayerID, getLayerCanvas, updateLayer } from "./layers.tsx";
 
 export const name = "building-canvas";
 
-let buildingCanvas: HTMLCanvasElement | undefined;
-
-export function initializeCanvas() {
-  console.log("initialize");
-  buildingCanvas = document.createElement("canvas", {});
-  buildingCanvas.height = DIMENSION;
-  buildingCanvas.width = DIMENSION;
-
-  Forma.terrain.groundTexture.add({
-    name,
-    canvas: buildingCanvas,
-    position: { x: 0, y: 0, z: CanvasLayerOrder.BUILDINGS },
-  });
-}
+const buildingCanvas = getLayerCanvas(LayerID.BUILDINGS, "buildings");
 
 function draw(buildings: Building[]) {
   if (!buildingCanvas) return;
@@ -31,10 +18,9 @@ function draw(buildings: Building[]) {
     }
   }
   console.log("drawing buildings", buildings.length);
-  Forma.terrain.groundTexture.updateTextureData({ name, canvas: buildingCanvas });
+  updateLayer(LayerID.BUILDINGS);
 }
 
 export default {
   draw,
-  initialize: initializeCanvas,
 };

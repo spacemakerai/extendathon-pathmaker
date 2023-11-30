@@ -1,15 +1,16 @@
 import * as THREE from "three";
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from "three-mesh-bvh";
-import { createCanvasFromSlope, degreesToRadians } from "../utils";
+import { renderIntoCanvasFromSlope, degreesToRadians } from "../utils";
 import { useCallback } from "preact/hooks";
 import { Forma } from "forma-embedded-view-sdk/auto";
-import { CANVAS_NAME } from "./terrain";
 import { saveCanvas, saveFloatArray } from "./storage";
-import { CanvasLayerOrder, DIMENSION } from "../pathmaker/constants";
+import { DIMENSION } from "../pathmaker/constants";
 import { canvasSpaceToCoordinate } from "../pathmaker/helpers";
+import { LayerID, updateLayer } from "../pathmaker/layers";
 
 type Props = {
   steepnessThreshold: number;
+  canvas: HTMLCanvasElement;
 };
 
 function getMinMax(array: Float32Array) {
@@ -35,7 +36,7 @@ const raycaster = new THREE.Raycaster();
 // @ts-ignore
 raycaster.firstHitOnly = true;
 
-export default function CalculateAndStore({ steepnessThreshold }: Props) {
+export default function CalculateAndStore({ steepnessThreshold, canvas }: Props) {
   const calculateTerrainSteepness = useCallback(async () => {
     const [terrain] = await Forma.geometry.getPathsByCategory({
       category: "terrain",
@@ -88,28 +89,17 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
       }
     }
 
-    const canvas = createCanvasFromSlope(
+    renderIntoCanvasFromSlope(
       terrainSlope,
       width,
       height,
       maxSlope,
       minSlope,
       degreesToRadians(steepnessThreshold),
+      canvas,
     );
 
-    // need to find the reference point of the terrain to place the canvas
-    // for this analysis, it's the middle of the terrain
-    const position = {
-      x: 0,
-      y: 0,
-      z: CanvasLayerOrder.TERRAIN,
-    };
-
-    await Forma.terrain.groundTexture.add({
-      name: CANVAS_NAME,
-      canvas,
-      position,
-    });
+    updateLayer(LayerID.TERRAIN);
     await saveCanvas("terrain-steepness-png", canvas, {
       steepnessThreshold: steepnessThreshold,
       minX,

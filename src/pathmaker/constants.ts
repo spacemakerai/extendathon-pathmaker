@@ -6,5 +6,6 @@ export enum CanvasLayerOrder {
   BUILDINGS,
   PHEROMONES,
   AGENTS,
+  SOURCES,
   POI,
 }
