@@ -1,5 +1,6 @@
-import state, { Point } from "./state.ts";
+import { Point } from "./state.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
+import { Building } from "./buildings.ts";
 
 export const name = "pathmaker-id";
 const DIMENSION = 1000;
@@ -44,7 +45,21 @@ function drawCircle(
   //ctx.stroke()
 }
 
-function drawCanvas(points: Point[]) {
+function drawTriangle(ctx: CanvasRenderingContext2D, triangle: [Point, Point, Point]) {
+  const [_p1, _p2, _p3] = triangle;
+  const p1 = coordinateToCanvasSpace(_p1);
+  const p2 = coordinateToCanvasSpace(_p2);
+  const p3 = coordinateToCanvasSpace(_p3);
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.lineTo(p3.x, p3.y);
+  ctx.lineTo(p1.x, p1.y);
+  ctx.fillStyle = "black";
+  ctx.fill();
+}
+
+function draw(points: Point[], buildings: Building[]) {
   if (!canvas) return;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   if (!ctx) return;
@@ -54,10 +69,13 @@ function drawCanvas(points: Point[]) {
   for (let point of points) {
     drawCircle(ctx, coordinateToCanvasSpace(point));
   }
+  for (let building of buildings) {
+    for (let triangle of building.triangles) {
+      drawTriangle(ctx, triangle);
+    }
+  }
+  //Move to a better location:
+  Forma.terrain.groundTexture.updateTextureData({ name, canvas });
 }
 
-state.points.subscribe((val) => {
-  if (!canvas) return;
-  drawCanvas(val);
-  Forma.terrain.groundTexture.updateTextureData({ name, canvas });
-});
+export default { draw };

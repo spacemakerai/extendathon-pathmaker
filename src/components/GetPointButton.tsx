@@ -1,14 +1,17 @@
 import { useCallback } from "preact/compat";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import state from "../pathmaker/state.ts";
+import canvas from "../pathmaker/canvas.ts";
+import buildings from "../pathmaker/buildings.ts";
 
 export default function GetPointButton() {
-  const onClick = useCallback(() => {
-    Forma.designTool.getPoint().then((pos) => {
-      if (pos) {
-        state.points.value = [...state.points.value, pos];
-      }
-    });
+  const onClick = useCallback(async () => {
+    const pos = await Forma.designTool.getPoint();
+    if (pos) {
+      state.points.value = [...state.points.value, pos];
+      const buildingTriangles = await buildings.get();
+      canvas.draw(state.points.value, buildingTriangles);
+    }
   }, []);
 
   return (
