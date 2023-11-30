@@ -10,6 +10,7 @@ export enum LayerID {
   PHEROMONES,
   AGENTS,
   COST_MAP,
+  TRAIL_MAP,
   SOURCES,
   POI,
 }

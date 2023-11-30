@@ -12,6 +12,7 @@ import Layers from "./pathmaker/layers.tsx";
 import costMap from "./pathmaker/costMap.ts";
 import { useState } from "preact/hooks";
 import styles from "./components/style.module.css";
+import trailMap from "./pathmaker/trailMap.ts";
 
 if (import.meta.hot) {
   import.meta.hot.on("vite:afterUpdate", () => {
@@ -57,6 +58,7 @@ export default function App() {
 
           <Terrain />
           <button onClick={costMap.update}>Update cost map</button>
+          <button onClick={trailMap.update}>Update trails</button>
           <Layers />
         </>
       )}
