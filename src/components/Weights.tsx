@@ -45,7 +45,7 @@ function InputSlider({
 }
 
 export default function Weights() {
-  const { point, road, pheromone, keepSpeed, pheromoneDecay, agentCount, building, random } =
+  const { point, road, pheromone, keepSpeed, pheromoneDecay, building, random } =
     state.agentWeights.value;
 
   return (
@@ -111,13 +111,13 @@ export default function Weights() {
         }}
       />
       <InputSlider
-        value={agentCount}
+        value={state.numberOfAgents.value}
         max={10000}
         min={10}
         label={"Number of agents"}
         step={100}
         onChange={(value) => {
-          state.agentWeights.value = { ...state.agentWeights.value, agentCount: value };
+          state.numberOfAgents.value = value;
         }}
       />
       <InputSlider

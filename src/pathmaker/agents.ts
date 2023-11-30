@@ -4,6 +4,7 @@ import pheromone from "./pheromoneCanvas.ts";
 import state, { Point } from "./state.ts";
 import roadCanvas from "./roadCanvas.ts";
 import buildingCanvas from "./buildingCanvas.ts";
+import { signal } from "@preact/signals";
 
 type Agent = {
   pos: {
@@ -25,7 +26,7 @@ function random(min: number, max: number) {
 let agents: Agent[] = [];
 
 function initializeAgents() {
-  agents = Array.apply(null, Array(state.agentWeights.value.agentCount)).map((_) => {
+  agents = Array.apply(null, Array(state.numberOfAgents.value)).map((_) => {
     const originIndex = randomInt(state.sourcePoints.value.length);
     let originPos: Point | undefined;
     if (originIndex < state.sourcePoints.value.length) {
@@ -92,7 +93,7 @@ function sub(v1: Point, v2: Point): Point {
 }
 
 function randomInt(max: number) {
-  return Math.floor(Math.random() * (max + 1));
+  return Math.floor(Math.random() * max);
 }
 
 const ANGLE_DIFF = Math.PI / 4;
@@ -240,19 +241,37 @@ export function updateAgentCanvas(showAgents: boolean) {
   agentCanvas.draw(showAgents ? agents.map((a) => a.pos) : []);
 }
 
+export const agentsRunning = signal<boolean>(false);
+
 function runSimulateAndAnimateLoop() {
-  updateAgentCanvas(true);
-  step();
-  return requestAnimationFrame(runSimulateAndAnimateLoop);
+  if (agentsRunning.value) {
+    updateAgentCanvas(true);
+    step();
+    requestAnimationFrame(runSimulateAndAnimateLoop);
+  }
 }
+
+state.pointsOfInterest.subscribe(() => {
+  initializeAgents();
+});
+
+state.sourcePoints.subscribe(() => {
+  initializeAgents();
+});
+
+state.numberOfAgents.subscribe((val) => {
+  console.log(val);
+  initializeAgents();
+});
 
 export function startAgents() {
   initializeAgents();
-  return runSimulateAndAnimateLoop();
+  agentsRunning.value = true;
+  runSimulateAndAnimateLoop();
 }
 
-export function stopAgents(oldAnimationId: number) {
-  cancelAnimationFrame(oldAnimationId);
+export function stopAgents() {
+  agentsRunning.value = false;
   updateAgentCanvas(false);
   //TODO: clear state
 }
