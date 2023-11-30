@@ -6,8 +6,8 @@ import pheromone from "./pathmaker/pheromoneCanvas.ts";
 import { runSimulateAndAnimateLoop, updateAgentCanvas } from "./pathmaker/agents";
 
 if (import.meta.hot) {
-  import.meta.hot.dispose(() => {
-    console.log("Dispose");
+  import.meta.hot.on("vite:afterUpdate", () => {
+    console.log("Update");
     agentCanvas.clear();
     pheromone.clear();
   });
