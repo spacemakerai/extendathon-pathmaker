@@ -19,10 +19,10 @@ const sourcePoints = signal<Point[]>([]);
 const buildingsState = signal<Building[]>([]);
 const visibleCanvas = signal({ buildings: true, roads: true });
 const agentWeights = signal({
-  keepSpeed: 2,
+  keepSpeed: 1,
   pheromone: 1,
   point: 0.5,
-  road: 5,
+  road: 1,
 });
 
 setTimeout(async () => {
