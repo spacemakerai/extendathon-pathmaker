@@ -1,6 +1,7 @@
 import { Point } from "./state.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Building } from "./buildings.ts";
+import { Road } from "./roads.ts";
 
 export const name = "pathmaker-id";
 const DIMENSION = 1000;
@@ -45,6 +46,19 @@ function drawCircle(
   //ctx.stroke()
 }
 
+function drawRoad(ctx: CanvasRenderingContext2D, road: Road) {
+  if (road.length < 2) return;
+  const start = coordinateToCanvasSpace(road[0]);
+  ctx.moveTo(start.x, start.y);
+  for (let i = 1; i < road.length; i++) {
+    const point = coordinateToCanvasSpace(road[i]);
+    ctx.lineTo(point.x, point.y);
+  }
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = "#ccc"
+  ctx.stroke();
+}
+
 function drawTriangle(ctx: CanvasRenderingContext2D, triangle: [Point, Point, Point]) {
   const [_p1, _p2, _p3] = triangle;
   const p1 = coordinateToCanvasSpace(_p1);
@@ -59,7 +73,7 @@ function drawTriangle(ctx: CanvasRenderingContext2D, triangle: [Point, Point, Po
   ctx.fill();
 }
 
-function draw(points: Point[], buildings: Building[]) {
+function draw(points: Point[], roads: Road[], buildings: Building[]) {
   if (!canvas) return;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   if (!ctx) return;
@@ -68,6 +82,9 @@ function draw(points: Point[], buildings: Building[]) {
 
   for (let point of points) {
     drawCircle(ctx, coordinateToCanvasSpace(point));
+  }
+  for (let road of roads) {
+    drawRoad(ctx, road);
   }
   for (let building of buildings) {
     for (let triangle of building.triangles) {
