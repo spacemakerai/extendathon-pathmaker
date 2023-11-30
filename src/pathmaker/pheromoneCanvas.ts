@@ -21,13 +21,19 @@ function initializeCanvas() {
   });
 }
 
+const DECAY = 0.95;
+
 function update(pos: Point[]) {
   if (!ctx || !canvas) return;
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imgData.data;
 
   for (let i = 0; i < data.length; i += 4) {
-    data[i + 3] = data[i + 3] * 0.99;
+    data[i + 3] = data[i + 3] * DECAY;
+    if (data[i + 3] < 0.1) {
+      data[i + 3] = 0;
+      data[i + 1] = 0;
+    }
   }
 
   ctx.putImageData(imgData, 0, 0);
@@ -50,8 +56,7 @@ function samplePos(pos: Point, radius: number = 10): number {
     const green = imageData.data[i + 1];
     sum += green;
   }
-  const avgNormalized = sum / count / 255;
-  return avgNormalized;
+  return sum / count / 255;
 }
 
 function clear() {
