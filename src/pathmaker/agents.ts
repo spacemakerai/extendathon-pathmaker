@@ -37,7 +37,7 @@ function bound(val: number, max: number) {
 }
 
 function move(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
-  return { x: bound(pos.x + velocity.x, DIMENSION), y: bound(pos.y + velocity.y, DIMENSION) };
+  return { x: pos.x + velocity.x, y: pos.y + velocity.y };
 }
 
 function normalize(vec: Point): Point {
@@ -156,6 +156,10 @@ function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["
 
 function step() {
   for (let a of agents) {
+    const testPos = move(a.pos, a.velocity);
+    if (testPos.x > DIMENSION || testPos.y > DIMENSION || testPos.x < 0 || testPos.y < 0) {
+      a.velocity = multiply(a.velocity, -1);
+    }
     a.pos = move(a.pos, a.velocity);
     a.velocity = updateVelocity(a.pos, a.velocity);
   }
