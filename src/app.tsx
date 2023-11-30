@@ -1,6 +1,5 @@
 import POIButton from "./components/POIButton.tsx";
 import "./pathmaker/agents";
-import { useState } from "preact/hooks";
 import Terrain from "./terrain/terrain";
 import pheromone from "./pathmaker/pheromoneCanvas.ts";
 import { signal } from "@preact/signals";
@@ -31,8 +30,6 @@ sourcePointsCanvas.initialize();
 buildingCanvas.initialize();
 
 export default function App() {
-  const [terrainOpen, setTerrainOpen] = useState<boolean>(false);
-
   return (
     <>
       <h1>Pathmaker</h1>
@@ -57,14 +54,7 @@ export default function App() {
           Update canvas manually
         </button>
       )}
-      <button
-        onClick={() => {
-          setTerrainOpen(!terrainOpen);
-        }}
-      >
-        Toggle terrain
-      </button>
-      {terrainOpen && <Terrain />}
+      <Terrain />
     </>
   );
 }

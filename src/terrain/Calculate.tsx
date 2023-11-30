@@ -131,7 +131,7 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
 
   return (
     <button onClick={calculateTerrainSteepness} style="width: 100%;">
-      Calculate and store results
+      Recalculate terrain
     </button>
   );
 }
