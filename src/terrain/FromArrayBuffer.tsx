@@ -44,7 +44,7 @@ export default function FromTerrainBuffer({ steepnessThreshold }: Props) {
       height,
       maxSlope,
       minSlope,
-      degreesToRadians(steepnessThreshold)
+      degreesToRadians(steepnessThreshold),
     );
 
     // need to find the reference point of the terrain to place the canvas

@@ -38,10 +38,7 @@ async function canvasFromDataUrl(url: string) {
     });
 }
 
-export async function saveJSONObject(
-  key: string,
-  value: { [key: string]: any }
-) {
+export async function saveJSONObject(key: string, value: { [key: string]: any }) {
   await Forma.extensions.storage.setObject({
     key,
     data: JSON.stringify(value),
@@ -51,7 +48,7 @@ export async function saveJSONObject(
 export async function saveCanvas(
   key: string,
   canvas: HTMLCanvasElement,
-  metadata?: { [key: string]: any }
+  metadata?: { [key: string]: any },
 ) {
   await Forma.extensions.storage.setObject({
     key,
@@ -63,7 +60,7 @@ export async function saveCanvas(
 export async function saveFloatArray(
   key: string,
   arr: Float32Array,
-  metadata?: { [key: string]: any }
+  metadata?: { [key: string]: any },
 ) {
   await Forma.extensions.storage.setObject({
     key,

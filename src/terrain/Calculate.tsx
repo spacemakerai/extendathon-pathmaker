@@ -1,9 +1,5 @@
 import * as THREE from "three";
-import {
-  computeBoundsTree,
-  disposeBoundsTree,
-  acceleratedRaycast,
-} from "three-mesh-bvh";
+import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from "three-mesh-bvh";
 import { createCanvasFromSlope, degreesToRadians } from "../utils";
 import { useCallback } from "preact/hooks";
 import { Forma } from "forma-embedded-view-sdk/auto";
@@ -21,7 +17,7 @@ function getMinMax(array: Float32Array) {
       acc[1] = Math.max(acc[1], curr);
       return acc;
     },
-    [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
+    [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
   );
 }
 
@@ -48,10 +44,7 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
     });
 
     const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(terrainTriangles, 3)
-    );
+    geometry.setAttribute("position", new THREE.BufferAttribute(terrainTriangles, 3));
 
     //@ts-ignore
     geometry.computeBoundsTree();
@@ -73,10 +66,7 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
     const direction = new THREE.Vector3(0, 0, -1);
     const origin = new THREE.Vector3(0, 0, 10000);
 
-    let [minSlope, maxSlope] = [
-      Number.POSITIVE_INFINITY,
-      Number.NEGATIVE_INFINITY,
-    ];
+    let [minSlope, maxSlope] = [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY];
     let terrainSlope = new Float32Array(width * height).fill(NaN);
     for (let i = 0; i < height; i++) {
       origin.y = maxY - SCALE / 2 - SCALE * i;
@@ -87,10 +77,7 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
         const normal = intersection!.face!.normal;
         const slope = Math.abs(
           Math.PI / 2 -
-            Math.atan(
-              normal.z /
-                Math.sqrt(Math.pow(normal.x, 2) + Math.pow(normal.y, 2))
-            )
+            Math.atan(normal.z / Math.sqrt(Math.pow(normal.x, 2) + Math.pow(normal.y, 2))),
         );
         terrainSlope[i * width + j] = slope;
         minSlope = Math.min(slope, minSlope);
@@ -104,7 +91,7 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
       height,
       maxSlope,
       minSlope,
-      degreesToRadians(steepnessThreshold)
+      degreesToRadians(steepnessThreshold),
     );
 
     // need to find the reference point of the terrain to place the canvas

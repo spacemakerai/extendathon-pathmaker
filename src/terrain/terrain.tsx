@@ -46,10 +46,7 @@ export default function Terrain() {
     <>
       <h2>Terrain steepness</h2>
       <div class="section">
-        <p>
-          Calculate the terrain slope and check if a point is steeper than your
-          threshold
-        </p>
+        <p>Calculate the terrain slope and check if a point is steeper than your threshold</p>
       </div>
       <div class="section">
         <p>Steepness Threshold</p>
@@ -67,12 +64,8 @@ export default function Terrain() {
       <button onClick={saveSettings} style="width: 100%">
         Save settings
       </button>
-      <CalculateAndStore
-        steepnessThreshold={projectSettings.steepnessThreshold}
-      />
-      <FromTerrainBuffer
-        steepnessThreshold={projectSettings.steepnessThreshold}
-      />
+      <CalculateAndStore steepnessThreshold={projectSettings.steepnessThreshold} />
+      <FromTerrainBuffer steepnessThreshold={projectSettings.steepnessThreshold} />
       <FromSavedPng steepnessThreshold={projectSettings.steepnessThreshold} />
       <button onClick={removeTerrainSlope} style="width: 100%">
         Remove terrain slope drawing

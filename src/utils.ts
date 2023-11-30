@@ -15,9 +15,9 @@ export function createCanvasFromSlope(
   terrainSlope: Float32Array,
   width: number,
   height: number,
-  maxSlope: number,
+  _maxSlope: number,
   minSlope: number,
-  threshold: number
+  threshold: number,
 ): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = width;
