@@ -21,13 +21,10 @@ function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-const NUMBER_OF_AGENTS = 100;
-const SPEED = 4;
-
 let agents: Agent[] = [];
 
 function initializeAgents() {
-  agents = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => {
+  agents = Array.apply(null, Array(state.agentWeights.value.agentCount)).map((_) => {
     const originIndex = randomInt(state.sourcePoints.value.length);
     let originPos: Point | undefined;
     if (originIndex < state.sourcePoints.value.length) {
@@ -38,7 +35,7 @@ function initializeAgents() {
 
     return {
       pos: originPos,
-      velocity: multiply(normalize({ x: random(-1, 1), y: random(-1, 1) }), SPEED),
+      velocity: multiply(normalize({ x: random(-1, 1), y: random(-1, 1) }), state.agentWeights.value.agentSpeed),
       targetType: "destination",
       targetIndex: randomInt(state.pointsOfInterest.value.length),
     };
@@ -175,7 +172,7 @@ function updateVelocity(agent: Agent): Agent["velocity"] {
     multiply(roadEffect, state.agentWeights.value.road),
   ]);
 
-  return setLength(sum, SPEED);
+  return setLength(sum, state.agentWeights.value.agentSpeed);
 }
 
 const REACHED_DESTINATION_THRESHOLD = 10;

@@ -45,7 +45,8 @@ function InputSlider({
 }
 
 export default function Weights() {
-  const { point, road, pheromone, keepSpeed } = state.agentWeights.value;
+  const { point, road, pheromone, keepSpeed, pheromoneDecay, agentCount } =
+    state.agentWeights.value;
   return (
     <>
       <InputSlider
@@ -86,6 +87,26 @@ export default function Weights() {
         step={0.1}
         onChange={(value) => {
           state.agentWeights.value = { ...state.agentWeights.value, keepSpeed: value };
+        }}
+      />
+      <InputSlider
+        value={agentCount}
+        max={10000}
+        min={10}
+        label={"Number of agents"}
+        step={100}
+        onChange={(value) => {
+          state.agentWeights.value = { ...state.agentWeights.value, agentCount: value };
+        }}
+      />
+      <InputSlider
+        value={pheromoneDecay}
+        max={2}
+        min={0}
+        label={"Pheromone decay"}
+        step={0.1}
+        onChange={(value) => {
+          state.agentWeights.value = { ...state.agentWeights.value, pheromoneDecay: value };
         }}
       />
     </>

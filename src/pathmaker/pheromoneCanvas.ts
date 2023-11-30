@@ -1,6 +1,6 @@
 import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
-import { Point } from "./state.ts";
+import state, { Point } from "./state.ts";
 import { drawCircle } from "./helpers.ts";
 
 let canvas: HTMLCanvasElement | undefined;
@@ -21,15 +21,13 @@ function initializeCanvas() {
   });
 }
 
-const DECAY = 0.9;
-
 function update(pos: Point[]) {
   if (!ctx || !canvas) return;
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imgData.data;
 
   for (let i = 0; i < data.length; i += 4) {
-    data[i + 3] = data[i + 3] * DECAY;
+    data[i + 3] = data[i + 3] * state.agentWeights.value.pheromoneDecay;
     if (data[i + 3] < 0.1) {
       data[i + 3] = 0;
       data[i + 1] = 0;
