@@ -31,7 +31,7 @@ function InputSlider({
           onInput={(e) => onChange(e.detail)}
         ></weave-slider>
         <weave-input
-          style={{ width: "40px", marginLeft: "12px" }}
+          style={{ maxWidth: "50px", marginLeft: "12px" }}
           type="number"
           value={value}
           label={label}
