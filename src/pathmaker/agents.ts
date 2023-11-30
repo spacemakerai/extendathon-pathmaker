@@ -117,7 +117,7 @@ function getRoadEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["p
 function getPointEffect(pos: Agent["pos"]) {
   const effects: Point[] = [];
 
-  for (let point of state.points.value) {
+  for (let point of state.pointsOfInterest.value) {
     const diff = sub(point, pos);
     const distance = length(diff);
     const scaled = multiply(diff, 1 / distance ** 2);

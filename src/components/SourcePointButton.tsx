@@ -3,26 +3,23 @@ import { Forma } from "forma-embedded-view-sdk/auto";
 import state from "../pathmaker/state.ts";
 import { coordinateToCanvasSpace } from "../pathmaker/helpers.ts";
 
-export default function POIButton() {
+export default function SourcePointButton() {
   const onClick = useCallback(async () => {
     const pos = await Forma.designTool.getPoint();
     if (pos) {
-      state.pointsOfInterest.value = [
-        ...state.pointsOfInterest.value,
-        coordinateToCanvasSpace(pos),
-      ];
+      state.sourcePoints.value = [...state.sourcePoints.value, coordinateToCanvasSpace(pos)];
     }
   }, []);
 
   return (
     <div>
-      <h3>Points of interest</h3>
-      <p className="helpText">Stores, bus stops, kindergartens, etc.</p>
-      {state.pointsOfInterest.value.length > 0 ? (
-        <p>{state.pointsOfInterest.value.length} POIs added</p>
+      <h3>Source points</h3>
+      <p className="helpText">Where people come from: their homes, subways, etc.</p>
+      {state.sourcePoints.value.length > 0 ? (
+        <p>{state.sourcePoints.value.length} source points added</p>
       ) : null}
       <weave-button variant="outlined" onClick={onClick}>
-        Add POI (store, bus stop, etc.)
+        Add source point
       </weave-button>
     </div>
   );

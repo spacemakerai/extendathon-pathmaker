@@ -4,10 +4,12 @@ import roads, { Road } from "./roads.ts";
 import buildingCanvas from "./buildingCanvas.ts";
 import roadCanvas from "./roadCanvas.ts";
 import pointOfInterestCanvas from "./pointOfInterestCanvas.ts";
+import sourcePointsCanvas from "./sourcePointsCanvas.ts";
 
 export type Point = { x: number; y: number };
 
-const points = signal<Point[]>([]);
+const pointsOfInterest = signal<Point[]>([]);
+const sourcePoints = signal<Point[]>([]);
 const buildingsState = signal<Building[]>([]);
 const visibleCanvas = signal({ buildings: true, roads: true });
 setTimeout(async () => {
@@ -29,11 +31,16 @@ effect(() => {
 });
 
 effect(() => {
-  pointOfInterestCanvas.draw(points.value);
+  pointOfInterestCanvas.draw(pointsOfInterest.value);
+});
+
+effect(() => {
+  sourcePointsCanvas.draw(sourcePoints.value);
 });
 
 export default {
-  points,
+  pointsOfInterest,
+  sourcePoints,
   buildings: buildingsState,
   roads: roadState,
 };

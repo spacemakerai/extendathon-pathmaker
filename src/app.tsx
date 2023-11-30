@@ -3,7 +3,14 @@ import "./pathmaker/agents";
 import { useState } from "preact/hooks";
 import Terrain from "./terrain/terrain";
 import pheromone from "./pathmaker/pheromoneCanvas.ts";
+import { signal } from "@preact/signals";
 import { runSimulateAndAnimateLoop, updateAgentCanvas } from "./pathmaker/agents";
+import roadCanvas from "./pathmaker/roadCanvas.ts";
+import buildingCanvas from "./pathmaker/buildingCanvas.ts";
+import agentCanvas from "./pathmaker/agentCanvas.ts";
+import pointOfInterestCanvas from "./pathmaker/pointOfInterestCanvas.ts";
+import SourcePointButton from "./components/SourcePointButton.tsx";
+import sourcePointsCanvas from "./pathmaker/sourcePointsCanvas.ts";
 
 const simulationRunningState = signal(false);
 
@@ -15,16 +22,12 @@ if (import.meta.hot) {
     simulationRunningState.value = false;
   });
 }
-import roadCanvas from "./pathmaker/roadCanvas.ts";
-import buildingCanvas from "./pathmaker/buildingCanvas.ts";
-import agentCanvas from "./pathmaker/agentCanvas.ts";
-import { signal } from "@preact/signals";
-import pointOfInterestCanvas from "./pathmaker/pointOfInterestCanvas.ts";
 
 agentCanvas.initialize();
 pheromone.initialize();
 roadCanvas.initialize();
 pointOfInterestCanvas.initialize();
+sourcePointsCanvas.initialize();
 buildingCanvas.initialize();
 
 export default function App() {
@@ -33,6 +36,7 @@ export default function App() {
   return (
     <>
       <h1>Pathmaker</h1>
+      <SourcePointButton />
       <POIButton />
       {!simulationRunningState.value && (
         <button
