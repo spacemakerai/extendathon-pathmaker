@@ -20,7 +20,7 @@ function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-const NUMBER_OF_AGENTS = 100;
+const NUMBER_OF_AGENTS = 200;
 const SPEED = 4;
 
 const agents: Agent[] = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => ({
@@ -38,11 +38,19 @@ function move(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
 
 function normalize(vec: Point): Point {
   const dist = Math.sqrt(vec.x ** 2 + vec.y ** 2);
+  if (dist === 0) {
+    return { x: 0, y: 0 };
+  }
   return { x: vec.x / dist, y: vec.y / dist };
 }
 
 function multiply(vec: Point, factor: number): Point {
   return { x: vec.x * factor, y: vec.y * factor };
+}
+
+function setLength(vec: Point, length: number) {
+  const dist = Math.sqrt(vec.x ** 2 + vec.y ** 2);
+  return { x: (vec.x / dist) * length, y: (vec.y / dist) * length };
 }
 
 function add(v1: Point, v2: Point): Point {
@@ -52,7 +60,7 @@ function add(v1: Point, v2: Point): Point {
 const DISTANCE = 50;
 const RADIUS = 20;
 
-function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
+function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
   const frontDir = normalize(velocity);
   const leftDir: Point = { x: frontDir.y, y: -frontDir.x };
   const rightDir: Point = { x: -frontDir.y, y: frontDir.x };
@@ -62,12 +70,20 @@ function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["
   const left = pheromone.samplePos(add(pos, multiply(leftDir, DISTANCE)), RADIUS);
 
   if (left > front && left > right) {
-    return multiply(normalize(add(velocity, multiply(leftDir, left))), SPEED);
+    return normalize(multiply(leftDir, left));
   } else if (right > left && right > front) {
-    return multiply(normalize(add(velocity, multiply(rightDir, right))), SPEED);
+    return normalize(multiply(rightDir, right));
   } else {
-    return multiply(normalize(add(velocity, multiply(frontDir, front))), SPEED);
+    return normalize(multiply(frontDir, front));
   }
+}
+
+const PHEROMONE_WEIGHT = 1;
+
+function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["velocity"] {
+  const pheromoneEffect = getPheromoneEffect(pos, velocity);
+
+  return setLength(add(velocity, multiply(pheromoneEffect, PHEROMONE_WEIGHT)), SPEED);
 }
 
 function step() {
