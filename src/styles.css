@@ -52,3 +52,7 @@ weave-select {
 
   color: #3c3c3cb2;
 }
+
+.title {
+  font: var(--12-bold)
+}

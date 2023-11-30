@@ -30,7 +30,7 @@ export default function App() {
   const [showSettings, setShowShowSettings] = useState(false);
   return (
     <>
-      <h3>Pathmaker</h3>
+      <h3 className={"title"}>Pathmaker</h3>
       <SourcePointButton />
       <POIButton />
       <div className={styles.Section}>
