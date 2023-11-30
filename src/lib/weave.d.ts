@@ -16,6 +16,13 @@ export declare module "preact/src/jsx" {
       "weave-slider": JSX.HTMLAttributes<HTMLElement> & {
         variant: "discrete" | "continuous";
       };
+      "weave-accordion": JSX.HTMLAttributes<HTMLElement> & {
+        children: JSX.Element[];
+        style: any;
+        label: string;
+        indicatorposition: "left" | "right";
+        indicator: "caret" | "operator";
+      };
       "weave-input": JSX.HTMLAttributes<HTMLElement> & {};
       "weave-select-option": JSX.HTMLAttributes<HTMLElement> & {
         disabled?: true;
