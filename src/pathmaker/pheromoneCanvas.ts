@@ -54,8 +54,13 @@ function samplePos(pos: Point, radius: number = 10): number {
   return avgNormalized;
 }
 
+function clear() {
+  Forma.terrain.groundTexture.remove({ name });
+}
+
 export default {
   initializeCanvas,
   update,
   samplePos,
+  clear,
 };

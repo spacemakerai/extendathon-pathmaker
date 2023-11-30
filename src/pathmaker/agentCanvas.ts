@@ -50,6 +50,11 @@ function draw(points: Point[], roads: Road[], buildings: Building[]) {
   Forma.terrain.groundTexture.updateTextureData({ name, canvas: agentCanvas });
 }
 
+function clear() {
+  Forma.terrain.groundTexture.remove({ name });
+}
+
 export default {
   draw,
+  clear,
 };
