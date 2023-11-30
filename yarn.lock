@@ -382,6 +382,18 @@
     kolorist "^1.8.0"
     resolve "^1.22.8"
 
+"@preact/signals-core@^1.4.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@preact/signals-core/-/signals-core-1.5.0.tgz#5d34db4d3c242c93e1cefb7ce8b2d10ecbdbfa79"
+  integrity sha512-U2diO1Z4i1n2IoFgMYmRdHWGObNrcuTRxyNEn7deSq2cru0vj0583HYQZHsAqcs7FE+hQyX3mjIV7LAfHCvy8w==
+
+"@preact/signals@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@preact/signals/-/signals-1.2.2.tgz#78df53b2d7e6cdda0bb32843f12eb0418a0d82b0"
+  integrity sha512-ColCqdo4cRP18bAuIR4Oik5rDpiyFtPIJIygaYPMEAwTnl4buWkBOflGBSzhYyPyJfKpkwlekrvK+1pzQ2ldWw==
+  dependencies:
+    "@preact/signals-core" "^1.4.0"
+
 "@prefresh/babel-plugin@0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@prefresh/babel-plugin/-/babel-plugin-0.5.0.tgz#61d8ef959007390077c9eddb7e9307c46e19277c"
@@ -561,10 +573,10 @@ file-saver@^2.0.5:
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
   integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
-forma-embedded-view-sdk@^0.24.3:
-  version "0.24.3"
-  resolved "https://registry.yarnpkg.com/forma-embedded-view-sdk/-/forma-embedded-view-sdk-0.24.3.tgz#a4a7c4641660d607bfbdf1bdbee3b9c5b4d02532"
-  integrity sha512-/jaTvCC7BlYxmXbhWMe+dsEwj+i+vnvHe103IjVcUmewFaWm2tzE+Z/0wSO7oMSePPSTqxzak20SPUoHnEgSJQ==
+forma-embedded-view-sdk@^0.36.0:
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/forma-embedded-view-sdk/-/forma-embedded-view-sdk-0.36.0.tgz#697d91283dae7522c63903922fc97ab591cf9e9d"
+  integrity sha512-OjGgZ3jMVosg6qoKTEN/U7mCZZ2oUv0keQW9aPU5pXZeKlaixTZxg+U0D1sVDJjpoeATyByq4Rk1RrM8D1K6Fw==
 
 fsevents@~2.3.2:
   version "2.3.3"
