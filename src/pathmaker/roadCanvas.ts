@@ -1,7 +1,7 @@
 import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Road } from "./roads.ts";
-import { coordinateToCanvasSpace } from "./helpers.ts";
+import { coordinateToCanvasSpace, sampleChannelForPos } from "./helpers.ts";
 import { Point } from "./state.ts";
 
 export const name = "roads-canvas";
@@ -14,11 +14,11 @@ export function initializeCanvas() {
   roadCanvas.height = DIMENSION;
   roadCanvas.width = DIMENSION;
 
-  Forma.terrain.groundTexture.add({
-    name,
-    canvas: roadCanvas,
-    position: { x: 0, y: 0, z: CanvasLayerOrder.ROADS },
-  });
+  // Forma.terrain.groundTexture.add({
+  //   name,
+  //   canvas: roadCanvas,
+  //   position: { x: 0, y: 0, z: CanvasLayerOrder.ROADS },
+  // });
 }
 
 function draw(roads: Road[]) {
@@ -41,22 +41,15 @@ function drawRoad(ctx: CanvasRenderingContext2D, road: Road) {
     ctx.lineTo(point.x, point.y);
   }
   ctx.lineWidth = 4;
-  ctx.strokeStyle = "#ccc";
+  ctx.strokeStyle = "rgba(255, 0, 0, 255)";
   ctx.stroke();
 }
 
-function samplePos(pos: Point, radius: number = 10): number {
+function samplePos(pos: Point) {
   if (!roadCanvas) return 0;
   const ctx = roadCanvas.getContext("2d") as CanvasRenderingContext2D;
   if (!ctx) return 0;
-  const imageData = ctx.getImageData(pos.x - radius, pos.y - radius, radius * 2, radius * 2);
-  const count = imageData.data.length / 4;
-  let sum = 0;
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const green = imageData.data[i + 1];
-    sum += green;
-  }
-  return sum / count / 255;
+  return sampleChannelForPos(ctx, pos, 0, 10);
 }
 
 export default {

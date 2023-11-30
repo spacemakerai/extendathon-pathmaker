@@ -38,3 +38,19 @@ export function drawCircle(
   //ctx.strokeStyle = "#003300"
   //ctx.stroke()
 }
+
+export function sampleChannelForPos(
+  ctx: CanvasRenderingContext2D,
+  pos: Point,
+  channel: 0 | 1 | 2,
+  radius: number = 10,
+): number {
+  const imageData = ctx.getImageData(pos.x - radius, pos.y - radius, radius * 2, radius * 2);
+  const count = imageData.data.length / 4;
+  let sum = 0;
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const val = imageData.data[i + channel];
+    sum += val;
+  }
+  return sum / count / 255;
+}

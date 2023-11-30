@@ -2,6 +2,7 @@ import agentCanvas from "./agentCanvas.ts";
 import { DIMENSION } from "./constants.ts";
 import pheromone from "./pheromoneCanvas.ts";
 import state, { Point } from "./state.ts";
+import roadCanvas from "./roadCanvas.ts";
 
 type Agent = {
   pos: {
@@ -18,8 +19,13 @@ function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-const NUMBER_OF_AGENTS = 200;
+const NUMBER_OF_AGENTS = 400;
 const SPEED = 4;
+
+const KEEP_SPEED_WEIGHT = 2;
+const PHEROMONE_WEIGHT = 1;
+const POINT_WEIGHT = 0.5;
+const ROAD_WEIGHT = 5;
 
 const agents: Agent[] = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => ({
   pos: { x: random(0, DIMENSION), y: random(0, DIMENSION) },
@@ -67,10 +73,10 @@ function sub(v1: Point, v2: Point): Point {
   return { x: v1.x - v2.x, y: v1.y - v2.y };
 }
 
-const DISTANCE = 50;
-const RADIUS = 20;
-
 function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
+  const DISTANCE = 50;
+  const RADIUS = 20;
+
   const frontDir = normalize(velocity);
   const leftDir: Point = { x: frontDir.y, y: -frontDir.x };
   const rightDir: Point = { x: -frontDir.y, y: frontDir.x };
@@ -78,6 +84,26 @@ function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Age
   const front = pheromone.samplePos(add(pos, multiply(frontDir, DISTANCE)), RADIUS);
   const right = pheromone.samplePos(add(pos, multiply(rightDir, DISTANCE)), RADIUS);
   const left = pheromone.samplePos(add(pos, multiply(leftDir, DISTANCE)), RADIUS);
+
+  if (left > front && left > right) {
+    return normalize(multiply(leftDir, left));
+  } else if (right > left && right > front) {
+    return normalize(multiply(rightDir, right));
+  } else {
+    return normalize(multiply(frontDir, front));
+  }
+}
+
+function getRoadEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["pos"] {
+  const DISTANCE = 30;
+
+  const frontDir = normalize(velocity);
+  const leftDir: Point = { x: frontDir.y, y: -frontDir.x };
+  const rightDir: Point = { x: -frontDir.y, y: frontDir.x };
+
+  const front = roadCanvas.samplePos(add(pos, multiply(frontDir, DISTANCE)));
+  const right = roadCanvas.samplePos(add(pos, multiply(rightDir, DISTANCE)));
+  const left = roadCanvas.samplePos(add(pos, multiply(leftDir, DISTANCE)));
 
   if (left > front && left > right) {
     return normalize(multiply(leftDir, left));
@@ -102,17 +128,16 @@ function getPointEffect(pos: Agent["pos"]) {
   return normalize(sum);
 }
 
-const KEEP_SPEED_WEIGHT = 3;
-const PHEROMONE_WEIGHT = 1;
-const POINT_WEIGHT = 2;
-
 function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["velocity"] {
   const pheromoneEffect = getPheromoneEffect(pos, velocity);
   const pointEffect = getPointEffect(pos);
+  const roadEffect = getRoadEffect(pos, velocity);
+
   const sum = adds([
     multiply(velocity, KEEP_SPEED_WEIGHT),
     multiply(pheromoneEffect, PHEROMONE_WEIGHT),
     multiply(pointEffect, POINT_WEIGHT),
+    multiply(roadEffect, ROAD_WEIGHT),
   ]);
 
   return setLength(sum, SPEED);
