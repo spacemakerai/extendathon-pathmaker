@@ -1,7 +1,12 @@
 import GetPointButton from "./components/GetPointButton.tsx";
-import "./pathmaker/canvas.ts";
+import { initializeCanvas } from "./pathmaker/agentCanvas.ts";
+import "./pathmaker/agents";
 import { useState } from "preact/hooks";
 import Terrain from "./terrain/terrain";
+import pheromone from "./pathmaker/pheromoneCanvas.ts";
+
+initializeCanvas();
+pheromone.initializeCanvas();
 
 export default function App() {
   const [terrainOpen, setTerrainOpen] = useState<boolean>(false);
