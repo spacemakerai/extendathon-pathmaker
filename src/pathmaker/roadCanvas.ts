@@ -1,4 +1,4 @@
-import { CanvasLayerOrder, DIMENSION } from "./constants.ts";
+import { DIMENSION } from "./constants.ts";
 import { Forma } from "forma-embedded-view-sdk/auto";
 import { Road } from "./roads.ts";
 import { coordinateToCanvasSpace, sampleChannelForPos } from "./helpers.ts";

@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from "three-mesh-bvh";
+import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from "three-mesh-bvh";
 import { createCanvasFromSlope, degreesToRadians } from "../utils";
 import { useCallback } from "preact/hooks";
 import { Forma } from "forma-embedded-view-sdk/auto";
-import { CANVAS_NAME, SCALE } from "./terrain";
+import { CANVAS_NAME } from "./terrain";
 import { saveCanvas, saveFloatArray } from "./storage";
 import { CanvasLayerOrder, DIMENSION } from "../pathmaker/constants";
 import { canvasSpaceToCoordinate } from "../pathmaker/helpers";
@@ -63,8 +63,8 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
     const yValues = terrainTriangles.filter((_, i) => i % 3 === 1);
     const [minY, maxY] = getMinMax(yValues);
 
-    const width = DIMENSION
-    const height = DIMENSION
+    const width = DIMENSION;
+    const height = DIMENSION;
     const direction = new THREE.Vector3(0, 0, -1);
     const origin = new THREE.Vector3(0, 0, 10000);
 
@@ -72,9 +72,9 @@ export default function CalculateAndStore({ steepnessThreshold }: Props) {
     let terrainSlope = new Float32Array(width * height).fill(NaN);
     for (let i = 0; i < height; i++) {
       for (let j = 0; j < width; j++) {
-        const coords = canvasSpaceToCoordinate({ x: j, y: i })
-        origin.x = coords.x
-        origin.y = coords.y
+        const coords = canvasSpaceToCoordinate({ x: j, y: i });
+        origin.x = coords.x;
+        origin.y = coords.y;
         raycaster.set(origin, direction);
         const intersection = raycaster.intersectObjects(scene.children)[0];
         const normal = intersection!.face!.normal;
