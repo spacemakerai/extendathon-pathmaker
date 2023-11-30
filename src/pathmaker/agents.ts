@@ -1,7 +1,7 @@
 import agentCanvas from "./agentCanvas.ts";
 import { DIMENSION } from "./constants.ts";
 import pheromone from "./pheromoneCanvas.ts";
-import { Point } from "./state.ts";
+import state, { Point } from "./state.ts";
 
 type Agent = {
   pos: {
@@ -18,7 +18,7 @@ function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-const NUMBER_OF_AGENTS = 200;
+const NUMBER_OF_AGENTS = 400;
 const SPEED = 4;
 
 const agents: Agent[] = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => ({
@@ -51,8 +51,20 @@ function setLength(vec: Point, length: number) {
   return { x: (vec.x / dist) * length, y: (vec.y / dist) * length };
 }
 
+function length(vec: Point) {
+  return Math.sqrt(vec.x ** 2 + vec.y ** 2);
+}
+
 function add(v1: Point, v2: Point): Point {
   return { x: v1.x + v2.x, y: v1.y + v2.y };
+}
+
+function adds(vs: Point[]): Point {
+  return vs.reduce((prev, curr) => add(prev, curr), { x: 0, y: 0 });
+}
+
+function sub(v1: Point, v2: Point): Point {
+  return { x: v1.x - v2.x, y: v1.y - v2.y };
 }
 
 const DISTANCE = 50;
@@ -76,12 +88,34 @@ function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Age
   }
 }
 
+function getPointEffect(pos: Agent["pos"]) {
+  const effects: Point[] = [];
+
+  for (let point of state.points.value) {
+    const diff = sub(point, pos);
+    const distance = length(diff);
+    const scaled = multiply(diff, 1 / distance ** 2);
+    effects.push(scaled);
+  }
+
+  const sum = adds(effects);
+  return normalize(sum);
+}
+
+const KEEP_SPEED_WEIGHT = 3;
 const PHEROMONE_WEIGHT = 1;
+const POINT_WEIGHT = 2;
 
 function updateVelocity(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["velocity"] {
   const pheromoneEffect = getPheromoneEffect(pos, velocity);
+  const pointEffect = getPointEffect(pos);
+  const sum = adds([
+    multiply(velocity, KEEP_SPEED_WEIGHT),
+    multiply(pheromoneEffect, PHEROMONE_WEIGHT),
+    multiply(pointEffect, POINT_WEIGHT),
+  ]);
 
-  return setLength(add(velocity, multiply(pheromoneEffect, PHEROMONE_WEIGHT)), SPEED);
+  return setLength(sum, SPEED);
 }
 
 function step() {
@@ -91,7 +125,6 @@ function step() {
   }
   pheromone.update(agents.map((a) => a.pos));
 }
-
 
 export function updateAgentCanvas(showAgents: boolean) {
   agentCanvas.draw(showAgents ? agents.map((a) => a.pos) : []);
