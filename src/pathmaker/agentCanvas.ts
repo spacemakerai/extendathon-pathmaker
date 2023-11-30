@@ -34,7 +34,7 @@ function draw(points: Point[]) {
   ctx.clearRect(0, 0, DIMENSION, DIMENSION);
 
   for (let point of points) {
-    drawCircle(ctx, point, 5, "red");
+    drawCircle(ctx, point, 2, "red");
   }
   Forma.terrain.groundTexture.updateTextureData({ name, canvas: agentCanvas });
 }
