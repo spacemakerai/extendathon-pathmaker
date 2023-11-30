@@ -1,4 +1,5 @@
 import { DIMENSION } from "./constants";
+import { CreateGrid, bfs } from "./graph/bfs";
 import { LayerID, getLayerCanvas, layers, updateLayer } from "./layers";
 
 export type CostSettings = {
@@ -21,16 +22,34 @@ function update() {
   const roadData = roadCtx.getImageData(0, 0, DIMENSION, DIMENSION).data;
   const buildingData = buildingCtx.getImageData(0, 0, DIMENSION, DIMENSION).data;
   if (!output || !terrainData || !roadData || !buildingData) return;
+  const grid = CreateGrid(DIMENSION, 0)
   for (let i = 0; i < output.data.length / 4; i++) {
     const terrain = (255 - terrainData[i * 4]) / 255;
     const road = roadData[i * 4] > 0;
     const building = buildingData[i * 4 + 3] > 127;
-    let val = 1 + settings.roadDisount;
+    let val = 10000;
     if (!building) {
       val = terrain + (road ? 0 : settings.roadDisount);
     }
-    const scaled = val / (1 + settings.roadDisount);
-    const c = Math.floor(255 * (1 - scaled));
+    const x = i % DIMENSION
+    const y = Math.floor(i / DIMENSION)
+    grid[x][y] = val
+  }
+  const bfsGrid = bfs(grid, 500, 500)
+  let max = 0
+  for (let i = 0; i < output.data.length / 4; i++) {
+    const x = i % DIMENSION
+    const y = Math.floor(i / DIMENSION)
+    const val = bfsGrid[x][y]
+    if (val >= 10000) continue
+    max = Math.max(max, val)
+  }
+  for (let i = 0; i < output.data.length / 4; i++) {
+    const x = i % DIMENSION
+    const y = Math.floor(i / DIMENSION)
+    const scaled = bfsGrid[x][y] / max
+    const clip = scaled > 1 ? 1 : scaled
+    const c = Math.floor(255 * (1 - clip));
     output.data[i * 4 + 0] = c;
     output.data[i * 4 + 1] = c;
     output.data[i * 4 + 2] = c;
