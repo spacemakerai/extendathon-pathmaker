@@ -19,11 +19,11 @@ function random(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-const NUMBER_OF_AGENTS = 400;
+const NUMBER_OF_AGENTS = 1000;
 const SPEED = 4;
 
-const KEEP_SPEED_WEIGHT = 2;
-const PHEROMONE_WEIGHT = 2;
+const KEEP_SPEED_WEIGHT = 1;
+const PHEROMONE_WEIGHT = 1;
 const POINT_WEIGHT = 0.5;
 const ROAD_WEIGHT = 1;
 
@@ -82,10 +82,8 @@ function getPheromoneEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Age
   const frontDir = normalize(velocity);
 
   const angle = Math.atan2(frontDir.y, frontDir.x);
-
   const rightAngle = angle - ANGLE_DIFF;
   const rightDir = { x: Math.cos(rightAngle), y: Math.sin(rightAngle) };
-
   const leftAngle = angle + ANGLE_DIFF;
   const leftDir = { x: Math.cos(leftAngle), y: Math.sin(leftAngle) };
 
@@ -109,8 +107,12 @@ function getRoadEffect(pos: Agent["pos"], velocity: Agent["velocity"]): Agent["p
   const DISTANCE = 30;
 
   const frontDir = normalize(velocity);
-  const leftDir: Point = { x: frontDir.y, y: -frontDir.x };
-  const rightDir: Point = { x: -frontDir.y, y: frontDir.x };
+
+  const angle = Math.atan2(frontDir.y, frontDir.x);
+  const rightAngle = angle - ANGLE_DIFF;
+  const rightDir = { x: Math.cos(rightAngle), y: Math.sin(rightAngle) };
+  const leftAngle = angle + ANGLE_DIFF;
+  const leftDir = { x: Math.cos(leftAngle), y: Math.sin(leftAngle) };
 
   const front = roadCanvas.samplePos(add(pos, multiply(frontDir, DISTANCE)));
   const right = roadCanvas.samplePos(add(pos, multiply(rightDir, DISTANCE)));

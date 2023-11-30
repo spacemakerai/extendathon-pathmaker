@@ -21,7 +21,7 @@ function initializeCanvas() {
   });
 }
 
-const DECAY = 0.95;
+const DECAY = 0.9;
 
 function update(pos: Point[]) {
   if (!ctx || !canvas) return;
