@@ -19,7 +19,7 @@ export default function POIButton() {
 
   return (
     <div className={styles.Section}>
-      <h3>Points of interest</h3>
+      <h3>Interest points</h3>
       <p className="helpText">Stores, bus stops, kindergartens, etc.</p>
       {state.getPointState.value === "poi" ? <div>Press escape to complete</div> : null}
       <weave-button
@@ -27,7 +27,7 @@ export default function POIButton() {
         onClick={onClick}
         disabled={state.getPointState.value === "poi"}
       >
-        Add POIs
+        Add points of interest
       </weave-button>
       {state.pointsOfInterest.value.length > 0 && (
         <weave-button variant="flat" onClick={() => (state.pointsOfInterest.value = [])}>
