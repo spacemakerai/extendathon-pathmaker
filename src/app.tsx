@@ -18,7 +18,7 @@ export default function App() {
 
   return (
     <>
-      <h1>Shadow study</h1>
+      <h1>Pathfinder</h1>
       <DateSelector month={month} setMonth={setMonth} day={day} setDay={setDay} />
       <TimeSelector
         startHour={startHour}
