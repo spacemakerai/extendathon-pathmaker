@@ -97,14 +97,12 @@ function step() {
 const buildingTriangles = await buildings.get();
 const roadLines = await roads.get();
 
-function animate() {
-  agentCanvas.draw(
-    agents.map((a) => a.pos),
-    roadLines,
-    buildingTriangles,
-  );
-  step();
-  requestAnimationFrame(animate);
+export function updateAgentCanvas(showAgents: boolean) {
+  agentCanvas.draw(showAgents ? agents.map((a) => a.pos) : [], roadLines, buildingTriangles);
 }
 
-animate();
+export function runSimulateAndAnimateLoop() {
+  updateAgentCanvas(true);
+  step();
+  requestAnimationFrame(runSimulateAndAnimateLoop);
+}
