@@ -45,7 +45,7 @@ function InputSlider({
 }
 
 export default function Weights() {
-  const { point, road, pheromone, keepSpeed, pheromoneDecay, agentCount,  building, random } =
+  const { point, road, pheromone, keepSpeed, pheromoneDecay, agentCount, building, random } =
     state.agentWeights.value;
 
   return (

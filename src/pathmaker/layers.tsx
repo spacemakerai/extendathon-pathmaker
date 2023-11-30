@@ -9,10 +9,12 @@ export enum LayerID {
   BUILDINGS,
   PHEROMONES,
   AGENTS,
+  COST_MAP,
   SOURCES,
   POI,
-  COST_MAP,
 }
+
+const defaultHidden = [LayerID.TERRAIN, LayerID.ROADS];
 
 export type Layer = {
   id: LayerID;
@@ -24,10 +26,7 @@ export type LayerList = Record<number, Layer>;
 export type LayerVisibility = Record<number, boolean>;
 
 export const layers = signal<LayerList>({});
-export const hiddenLayers = signal<LayerVisibility>({
-  [LayerID.TERRAIN]: false,
-  [LayerID.ROADS]: false,
-});
+export const hiddenLayers = signal<LayerVisibility>({});
 
 export function showLayer(id: LayerID) {
   if (!layers.value[id]) return;
@@ -67,7 +66,12 @@ export function getLayerCanvas(id: LayerID, name: string) {
       canvas,
     };
     layers.value = { ...layers.value, [id]: layer };
-    showLayer(id);
+    const hidden = defaultHidden.indexOf(id) !== -1;
+    if (hidden) {
+      hiddenLayers.value = { ...hiddenLayers.value, [id]: true };
+    } else {
+      showLayer(id);
+    }
     return canvas;
   }
   return layers.value[id].canvas;
