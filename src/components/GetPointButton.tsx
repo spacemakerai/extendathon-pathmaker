@@ -21,7 +21,7 @@ export default function GetPointButton() {
   return (
     <div class="row">
       <weave-button variant="outlined" onClick={onClick}>
-        Get point
+        Add POI (store, bus stop, etc.)
       </weave-button>
     </div>
   );
