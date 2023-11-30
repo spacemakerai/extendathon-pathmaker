@@ -27,6 +27,7 @@ const agents: Agent[] = Array.apply(null, Array(NUMBER_OF_AGENTS)).map((_) => ({
   velocity: multiply(normalize({ x: random(-1, 1), y: random(-1, 1) }), SPEED),
 }));
 
+//@ts-ignore
 function bound(val: number, max: number) {
   return (val + max) % max;
 }
