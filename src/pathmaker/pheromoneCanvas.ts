@@ -58,13 +58,33 @@ function samplePos(pos: Point, radius: number = 10): number {
   return sum / count / 255;
 }
 
-function clear() {
+function remove() {
   Forma.terrain.groundTexture.remove({ name });
 }
+
+function resetCanvas() {
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  if (!ctx) return;
+  ctx.clearRect(0, 0, DIMENSION, DIMENSION);
+}
+
+state.pointsOfInterest.subscribe(() => {
+  resetCanvas();
+});
+
+state.sourcePoints.subscribe(() => {
+  resetCanvas();
+});
+
+state.numberOfAgents.subscribe(() => {
+  resetCanvas();
+});
 
 export default {
   initialize: initializeCanvas,
   update,
   samplePos,
-  clear,
+  remove,
+  resetCanvas,
 };

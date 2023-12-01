@@ -14,12 +14,13 @@ import { useState } from "preact/hooks";
 import styles from "./components/style.module.css";
 import trailMap from "./pathmaker/trailMap.ts";
 import state from "./pathmaker/state.ts";
+import pheromoneCanvas from "./pathmaker/pheromoneCanvas.ts";
 
 if (import.meta.hot) {
   import.meta.hot.on("vite:afterUpdate", () => {
     console.log("Update");
     agentCanvas.clear();
-    pheromone.clear();
+    pheromone.remove();
   });
 }
 
@@ -80,6 +81,7 @@ export default function App() {
             onClick={() => {
               if (agentsRunning.value) {
                 stopAgents();
+                pheromoneCanvas.resetCanvas();
               } else {
                 startAgents();
               }

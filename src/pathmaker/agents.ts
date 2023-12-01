@@ -270,8 +270,7 @@ state.sourcePoints.subscribe(() => {
   initializeAgents();
 });
 
-state.numberOfAgents.subscribe((val) => {
-  console.log(val);
+state.numberOfAgents.subscribe(() => {
   initializeAgents();
 });
 
